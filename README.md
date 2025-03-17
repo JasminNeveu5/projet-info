@@ -30,14 +30,12 @@
    - Utiliser **matplotlib** pour créer des graphiques pertinents.
    - Les graphiques doivent illustrer les réponses aux questions et justifier les choix de variables pour l'apprentissage automatique.
 
----
 
 ### 5. **💾 Sauvegarde des résultats**
    - **📅 Échéance : Avant le rendu final (7 mai 2025)**
    - Sauvegarder les résultats dans des fichiers (CSV, TXT, PNG, etc.).
    - S'assurer que le code peut être exécuté pour reproduire les résultats.
 
----
 
 ### 6. **🖥️ Interface utilisateur en ligne de commande (optionnel)**
    - **📅 Échéance : Si le temps le permet**
@@ -51,7 +49,6 @@
      - La problématique choisie pour l'apprentissage automatique, les variables sélectionnées et l'algorithme envisagé.
      - Une liste des tâches accomplies et des tâches restantes.
 
----
 
 ### 8. **💻 Code source**
    - **📅 Échéance : Mercredi 7 mai 2025 à 21h00**
