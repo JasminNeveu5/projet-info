@@ -24,6 +24,12 @@
    - Choisir un algorithme simple (ex : régression linéaire, k-moyennes, etc.) et l'implémenter avec **scikit-learn**.
    - Justifier les choix et présenter les résultats.
 
+   **L’algorithme n’est pas l’aspect central de cette partie**. Le plus important est votre dé-
+   marche scientifique : définir la problématique à laquelle vous essayez de répondre ; présenter les variables
+   sélectionnées et les variables créées en justifiant leur pertinence, ainsi que la manière dont vous avez créé ces
+   variables ; brève présentation de l’algorithme pour montrer que vous comprenez comment il fonctionne et
+   qu’il est pertinent pour répondre à votre problématique ; présentation des résultats obtenus
+
 
 ### 4. **📈 Visualisation des données**
    - **📅 Échéance : Avant le rendu final (7 mai 2025)**
