@@ -4,7 +4,7 @@ import pandas as pd
 class DefaultQuery:
 
     @staticmethod
-    def q1(nb_victoires):
+    def nombre_victoire(nb_victoires):
         results = pd.read_csv("../../data/results.csv")
         drivers = pd.read_csv("../../data/drivers.csv")
         return (
@@ -19,7 +19,7 @@ class DefaultQuery:
         )
 
     @staticmethod
-    def q2(annee):
+    def classement(annee):
 
         results = pd.read_csv("../../data/results.csv")
         drivers = pd.read_csv("../../data/drivers.csv")
@@ -45,3 +45,45 @@ class DefaultQuery:
         return pd.merge(sorted_drivers, drivers, on="driverId")[
             ["forename", "surname", "points"]
         ].to_json(orient="records")
+
+    @staticmethod
+    def meilleur_temps(location: str):
+        circuits = pd.read_csv("../../data/circuits.csv")
+        lap_times = pd.read_csv("../../data/lap_times.csv")
+        races = pd.read_csv("../../data/races.csv")
+        drivers = pd.read_csv("../../data/drivers.csv")
+
+        def conversion(milliseconds):
+            minutes = milliseconds // 60000
+            seconds = (milliseconds % 60000) // 1000
+            millis = milliseconds % 1000
+            return f"{minutes}m {seconds}s {millis}ms"
+
+        merged_data = pd.merge(lap_times, races, on="raceId")
+        merged_data = pd.merge(merged_data, circuits, on="circuitId")
+        best_laps_per_race = merged_data.loc[
+            merged_data.groupby("raceId")["milliseconds"].idxmin()
+        ]
+        best_laps_per_race = pd.merge(best_laps_per_race, drivers,
+                                      on="driverId")
+        best_laps_per_circuit = best_laps_per_race.loc[
+            best_laps_per_race.groupby("circuitId")["milliseconds"].idxmin()
+        ]
+        best_laps_per_circuit["meilleur_temps_ever"] = best_laps_per_circuit[
+            "milliseconds"
+        ].apply(conversion)
+        result = best_laps_per_circuit[
+            ["location", "meilleur_temps_ever", "forename", "surname", "year"]
+        ]
+        result = result.rename(
+            columns={
+                "location": "Circuit",
+                "meilleur_temps_ever": "Best_Lap_Time",
+                "forename": "Driver_First_Name",
+                "surname": "Driver_Last_Name",
+                "year": "Year",
+                "name": "Race_Name",
+            }
+        )
+        return (result.query(f"Circuit == '{location}'")
+                      .to_json(orient="records"))
