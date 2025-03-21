@@ -3,8 +3,6 @@ import pandas as pd
 
 
 class Question:
-    def __init__(self):
-        pass
 
     def q1(self, nb_victoires: int):
         if nb_victoires < 0:
