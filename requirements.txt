@@ -3,3 +3,4 @@ fastapi
 black
 isort
 black[jupiter]
+seaborn
