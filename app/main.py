@@ -10,11 +10,11 @@ async def index():
     return {"hello": "autre"}
 
 
-@app.get("/q1_{nb_victoires}")
+@app.get("/nb_victoires_{nb_victoires}")
 async def q1(nb_victoires: int):
     return DefaultQuery.q1(nb_victoires)
 
 
-@app.get("/q2_{annee}")
+@app.get("/classement_{annee}")
 async def q2(annee: int):
     return DefaultQuery.q2(annee)
