@@ -1,15 +1,13 @@
-from fastapi import HTTPException
 import pandas as pd
+import os
 
+class DefaultQuery:
 
-class Question:
-
-    def q1(self, nb_victoires: int):
-        if nb_victoires < 0:
-            raise HTTPException(status_code=404,
-                                detail="Nombre de victoires invalide")
-        results = pd.read_csv("../../data/results.csv")
-        drivers = pd.read_csv("../../data/drivers.csv")
+    @staticmethod
+    def q1(nb_victoires):
+        base_path = os.path.dirname(__file__)
+        results = pd.read_csv(os.path.join(base_path, "../../data/results.csv"))
+        drivers = pd.read_csv(os.path.join(base_path, "../../data/drivers.csv"))
         return (
             pd.merge(results, drivers, on="driverId")
             .query("position == '1'")
@@ -21,12 +19,14 @@ class Question:
             .to_json(orient="records")
         )
 
-    def q2(self, annee: int):
-        if annee < 1950 or annee > 2024:
-            raise HTTPException(status_code=404, detail="Année invalide")
-        results = pd.read_csv("../../data/results.csv")
-        drivers = pd.read_csv("../..//data/drivers.csv")
-        races = pd.read_csv("../../data/races.csv")
+    @staticmethod
+    def q2(annee):
+
+        base_path = os.path.dirname(__file__)
+        results = pd.read_csv(os.path.join(base_path, "../../data/results.csv"))
+        drivers = pd.read_csv(os.path.join(base_path, "../../data/drivers.csv"))
+        races = pd.read_csv(os.path.join(base_path, "../../data/races.csv"))
+
         races_year = pd.merge(results, races[races["year"] == annee],
                               on="raceId")
         races_year["positionOrder"] = races_year["positionOrder"].astype(int)
