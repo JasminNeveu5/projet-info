@@ -7,8 +7,7 @@ class Question:
     @staticmethod
     def q1(nb_victoires: int):
         if nb_victoires < 0:
-            raise HTTPException(status_code=404,
-                                detail="Nombre de victoires invalide")
+            raise HTTPException(status_code=404, detail="Nombre de victoires invalide")
         results = pd.read_csv("../../data/results.csv")
         drivers = pd.read_csv("../../data/drivers.csv")
         return (
@@ -29,8 +28,7 @@ class Question:
         results = pd.read_csv("../../data/results.csv")
         drivers = pd.read_csv("../..//data/drivers.csv")
         races = pd.read_csv("../../data/races.csv")
-        races_year = pd.merge(results, races[races["year"] == annee],
-                              on="raceId")
+        races_year = pd.merge(results, races[races["year"] == annee], on="raceId")
         races_year["positionOrder"] = races_year["positionOrder"].astype(int)
         points_wins = (
             races_year.groupby("driverId")
