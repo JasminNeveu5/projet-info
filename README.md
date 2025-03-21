@@ -24,11 +24,10 @@
    - Choisir un algorithme simple (ex : régression linéaire, k-moyennes, etc.) et l'implémenter avec **scikit-learn**.
    - Justifier les choix et présenter les résultats.
 
-   **L’algorithme n’est pas l’aspect central de cette partie**. Le plus important est votre dé-
-   marche scientifique : définir la problématique à laquelle vous essayez de répondre ; présenter les variables
+   **L’algorithme n’est pas l’aspect central de cette partie**. Le plus important est votre démarche scientifique : définir la problématique à laquelle vous essayez de répondre ; présenter les variables
    sélectionnées et les variables créées en justifiant leur pertinence, ainsi que la manière dont vous avez créé ces
    variables ; brève présentation de l’algorithme pour montrer que vous comprenez comment il fonctionne et
-   qu’il est pertinent pour répondre à votre problématique ; présentation des résultats obtenus
+   qu’il est pertinent pour répondre à votre problématique ; présentation des résultats obtenus.
 
 
 ### 4. **📈 Visualisation des données**
@@ -96,4 +95,15 @@
 - **Collaboration** : Chaque membre doit répondre à au moins une question avec **pandas** et une en **Python pur**.
 - **Explication du code** : Chaque membre doit être capable d'expliquer et de justifier son code.
 
-
+# Questions traitées
+-[x] Quels pilotes ont gagné au moins 30 courses ? Indiquez le nombre de victoires pour ces personnes. 
+-[x] Quel était le classement des pilotes à l'issue de la saison 2023 ? 
+Gérer les cas d'égalité (nombre de victoires, deuxièmes places, etc.). 
+-[ ] Quel est le temps moyen de pit-stops par année ?
+-[ ] Quel constructeur est le plus de fois dernier en course ?
+-[ ] Quel est la victoire le plus serré (première place et seconde place les plus proches en temps)
+-[ ] Quel sont les pilotes avec le plus d'accidents / les plus disqualifiés (à choisir) ? 
+-[ ] Pour chaque ville / circuit, quel est le temps minimum pour être qualifié ?
+-[ ] Quel est le meilleur temps d'un tour de circuit effectué sur celui-ci ?
+-[ ] Quel est la proportion de pilotes qui conduisent une formule 1 de la même nationalité qu'eux ?
+-[ ] Quel constructeur a le plus de casse dans sa voiture, et quels sont les problèmes les plus courants ? 
