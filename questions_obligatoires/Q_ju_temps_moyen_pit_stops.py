@@ -11,7 +11,7 @@ jointure = pd.merge(pit_stops, races, on='raceId', how='left')
 temps_moyen_pit_stops = jointure.groupby('year')['milliseconds'].mean()
 
 
-# Graphique du temps moyen passé au pit-stops par année (à arranger)
+# Graphique du temps moyen passé au pit-stops par année
 plt.axhline(y=60000,color='gray',linestyle='--')
 plt.axhline(y=120000,color='gray',linestyle='--')
 plt.axhline(y=180000,color='gray',linestyle='--')
