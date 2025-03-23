@@ -4,3 +4,4 @@ black
 isort
 black[jupiter]
 seaborn
+pathlib
