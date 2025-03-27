@@ -9,7 +9,8 @@ router = APIRouter()
 @router.get("/nombre_victoire_{nb_victoires}")
 async def nombre_victoire(nb_victoires: int):
     if nb_victoires < 0:
-        raise HTTPException(status_code=404, detail="Nombre de victoire Invalide")
+        raise HTTPException(status_code=404,
+                            detail="Nombre de victoire Invalide")
     return DefaultQuery.nombre_victoire(nb_victoires)
 
 
