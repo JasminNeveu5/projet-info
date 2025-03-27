@@ -1,12 +1,13 @@
 import pandas as pd
+from options.config import DATA_DIR
 
 
 class DefaultQuery:
 
     @staticmethod
     def nombre_victoire(nb_victoires):
-        results = pd.read_csv("../../data/results.csv")
-        drivers = pd.read_csv("../../data/drivers.csv")
+        results = pd.read_csv(f"{DATA_DIR}/results.csv")
+        drivers = pd.read_csv(f"{DATA_DIR}/drivers.csv")
         return (
             pd.merge(results, drivers, on="driverId")
             .query("position == '1'")
@@ -21,9 +22,9 @@ class DefaultQuery:
     @staticmethod
     def classement(annee):
 
-        results = pd.read_csv("../../data/results.csv")
-        drivers = pd.read_csv("../../data/drivers.csv")
-        races = pd.read_csv("../../data/races.csv")
+        results = pd.read_csv(f"{DATA_DIR}/results.csv")
+        drivers = pd.read_csv(f"{DATA_DIR}drivers.csv")
+        races = pd.read_csv(f"{DATA_DIR}/races.csv")
 
         races_year = pd.merge(results, races[races["year"] == annee],
                               on="raceId")
@@ -48,10 +49,10 @@ class DefaultQuery:
 
     @staticmethod
     def meilleur_temps(location: str):
-        circuits = pd.read_csv("../../data/circuits.csv")
-        lap_times = pd.read_csv("../../data/lap_times.csv")
-        races = pd.read_csv("../../data/races.csv")
-        drivers = pd.read_csv("../../data/drivers.csv")
+        drivers = pd.read_csv(f"{DATA_DIR}drivers.csv")
+        races = pd.read_csv(f"{DATA_DIR}/races.csv")
+        circuits = pd.read_csv(f"{DATA_DIR}circuits.csv")
+        lap_times = pd.read_csv(f"{DATA_DIR}/lap_times.csv")
 
         def conversion(milliseconds):
             minutes = milliseconds // 60000
