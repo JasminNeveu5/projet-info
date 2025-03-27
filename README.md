@@ -103,7 +103,7 @@ Gérer les cas d'égalité (nombre de victoires, deuxièmes places, etc.).
 - [ ] Quel constructeur est le plus de fois dernier en course ?
 - [ ] Quel est la victoire le plus serré (première place et seconde place les plus proches en temps)
 - [ ] Quel sont les pilotes avec le plus d'accidents / les plus disqualifiés (à choisir) ? 
-- [ ] Pour chaque ville / circuit, quel est le temps minimum pour être qualifié ?
+- [x] Pour chaque ville / circuit, quel est le temps minimum pour être qualifié ?
 - [ ] Quel est le meilleur temps d'un tour de circuit effectué sur celui-ci ?
 - [ ] Quel est la proportion de pilotes qui conduisent une formule 1 de la même nationalité qu'eux ?
-- [ ] Quel constructeur a le plus de casse dans sa voiture, et quels sont les problèmes les plus courants ? 
+- [x] Quel constructeur a le plus de casse dans sa voiture, et quels sont les problèmes les plus courants ? 
