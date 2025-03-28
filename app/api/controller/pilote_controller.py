@@ -23,7 +23,7 @@ async def classement(annee: int):
 
 @router.get("/meilleur_tour_{localisation}")
 async def meilleur_tour(localisation: str):
-    circuits = pd.read_csv("../../data/circuits.csv")
+    circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
     if not circuits["location"].isin([localisation]).any():
         raise HTTPException(status_code=404, detail="Invalide location")
     return DefaultQuery.meilleur_temps(localisation)
@@ -67,3 +67,12 @@ async def temps_max_qualif(circuit: str, annee: str):
     if not races["year"].isin([int(annee)]).any():
         raise HTTPException(status_code=404, detail="Invalide annee")
     return DefaultQuery.temps_min_qualif_annee(circuit, annee)
+
+
+@router.get("/victoire_nationalite_{nationalite}")
+async def victoire_nationalite(nationalite: str):
+    drivers = pd.read_csv(f"{DATA_DIR}/drivers.csv")
+    drivers["nationality"] = drivers["nationality"].str.lower()
+    if not drivers["nationality"].isin([nationalite]).any():
+        raise HTTPException(status_code=404, detail="Nationalite invalide")
+    return DefaultQuery.victoire_nationalite(nationalite)
