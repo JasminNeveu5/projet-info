@@ -92,6 +92,28 @@ class DefaultQuery:
 
     @staticmethod
     def temps_min_qualif_annee(circuit: str, annee: str):
+        """
+        Calculates the maximum qualifying times for a specified circuit and year. This 
+        function processes data from qualifying, circuits, and races datasets, filters 
+        entries by the given year, and calculates the maximum qualifying times in 
+        sessions Q1, Q2, and Q3 for the specified circuit. Sometimes there is only one
+        qualifying or none this year, so it returns `null` for those sessions.
+
+        :param circuit: The reference identifier (circuitRef) for the desired circuit.
+        :type circuit: str
+        :param annee: The year for filtering race data.
+        :type annee: str
+        :return: A dictionary containing the maximum qualifying times for Q1, Q2, and Q3 
+                 sessions for the specified circuit. If no times are available for a 
+                 session, its value will be None.
+        :rtype: dict
+
+        **Example**
+        >>> DefaultQuery.temps_min_qualif_annee('monaco', '2018')
+        {'q1': '1:13.393', 'q2': '1:12.728', 'q3': '1:12.221'}
+        >>> DefaultQuery.temps_min_qualif_annee('albert_park', '2000')
+        {'q1': '1:34.705', 'q2': None, 'q3': None}
+        """
         qualif = pd.read_csv(f"{DATA_DIR}/qualifying.csv")
         circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
         races = pd.read_csv(f"{DATA_DIR}/races.csv")
@@ -113,10 +135,10 @@ class DefaultQuery:
 
         # Create a dictionary of times per circuitId and qualifier
         times_by_circuit_and_qual = {}
-        for circuitRef, group in interesting_datas_by_circuit:
+        for circuit_ref, group in interesting_datas_by_circuit:
             for qual in ['q1', 'q2', 'q3']:
                 times = group[qual].dropna().tolist()
-                times_by_circuit_and_qual[(circuitRef, qual)] = times
+                times_by_circuit_and_qual[(circuit_ref, qual)] = times
 
         # Compute the maximum time for each (circuitId, qualifier)
         max_times_by_circuit_and_qual = {key: max(times) for key, times in times_by_circuit_and_qual.items() if times}
