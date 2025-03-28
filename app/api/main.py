@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.controller import pilote_controller
+from app.api.controller import pilote_controller
 
 
 app = FastAPI()
