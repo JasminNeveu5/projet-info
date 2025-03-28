@@ -26,7 +26,8 @@ class DefaultQuery:
         drivers = pd.read_csv(f"{DATA_DIR}drivers.csv")
         races = pd.read_csv(f"{DATA_DIR}/races.csv")
 
-        races_year = pd.merge(results, races[races["year"] == annee], on="raceId")
+        races_year = pd.merge(results, races[races["year"] == annee],
+                              on="raceId")
         races_year["positionOrder"] = races_year["positionOrder"].astype(int)
         points_wins = (
             races_year.groupby("driverId")
@@ -64,7 +65,8 @@ class DefaultQuery:
         best_laps_per_race = merged_data.loc[
             merged_data.groupby("raceId")["milliseconds"].idxmin()
         ]
-        best_laps_per_race = pd.merge(best_laps_per_race, drivers, on="driverId")
+        best_laps_per_race = pd.merge(best_laps_per_race, drivers,
+                                      on="driverId")
         best_laps_per_circuit = best_laps_per_race.loc[
             best_laps_per_race.groupby("circuitId")["milliseconds"].idxmin()
         ]
@@ -84,87 +86,42 @@ class DefaultQuery:
                 "name": "Race_Name",
             }
         )
-        return result.query(f"Circuit == '{location}'").to_json(orient="records")
+        return (result.query(f"Circuit == '{location}'")
+                      .to_json(orient="records"))
+
 
     @staticmethod
-    def temps_moyen_pitstops(annee: int):
-        import pandas as pd
-
-        pit_stops = pd.read_csv(f"{DATA_DIR}/pit_stops.csv")
+    def temps_min_qualif_annee(circuit: str, annee: str):
+        qualif = pd.read_csv(f"{DATA_DIR}/qualifying.csv")
+        circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
         races = pd.read_csv(f"{DATA_DIR}/races.csv")
-        jointure = pd.merge(pit_stops, races, on="raceId", how="left")
-        temps_moyen_pit_stops = jointure.groupby("year")["milliseconds"].mean()
 
-        def conversion(milliseconds):
-            minutes = milliseconds // 60000
-            seconds = (milliseconds % 60000) // 1000
-            millis = milliseconds % 1000
-            return f"{minutes}m {seconds}s {millis}ms"
+        # On construit la table avec que les données importantes + selection de l'année
+        races = races.query(f"year == {annee}")
+        races_plus_circuits = pd.merge(races, circuits, on="circuitId")
 
-        temps_moyen_pit_stops_converted = temps_moyen_pit_stops.apply(conversion)
-        return {
-            "year": annee,
-            "milliseconds": temps_moyen_pit_stops[annee],
-            "converted": temps_moyen_pit_stops_converted[annee],
-        }
+        interesting_datas = pd.merge(qualif, races_plus_circuits, on="raceId")[
+            ["circuitId", "circuitRef", "q1", "q2", "q3","name_x"]]
 
-    @staticmethod
-    def casse_constructeur(constructeur: str):
-        import pandas as pd
+        # On remplace les "\N" (non-qualifiés) par None pour pouvoir les enlever facilement
+        interesting_datas['q1'] = interesting_datas['q1'].replace(r'\N', None)
+        interesting_datas['q2'] = interesting_datas['q2'].replace(r'\N', None)
+        interesting_datas['q3'] = interesting_datas['q3'].replace(r'\N', None)
 
-        status_code = pd.read_csv(f"{DATA_DIR}/status.csv")
-        f1_constructor = pd.read_csv(f"{DATA_DIR}/constructors.csv")
-        results = pd.read_csv(f"{DATA_DIR}/results.csv")
-        results_x_constructor = pd.merge(results, f1_constructor, on="constructorId")[
-            ["constructorId", "statusId"]
-        ]
-        status_counts = (
-            results_x_constructor.groupby(["constructorId", "statusId"])
-            .size()
-            .reset_index(name="count")
-        )
-        status_counts = status_counts[
-            ~status_counts["statusId"].isin(
-                [1, 2, 3, 4, 31, 50, 128, 53, 58, 73, 81, 82, 88, 97, 100]
-                + list(range(11, 20))
-            )
-        ]
-        total_counts = (
-            results_x_constructor.groupby("constructorId")
-            .size()
-            .reset_index(name="total_count")
-        ).astype(int)
-        status_counts = pd.merge(status_counts, total_counts, on="constructorId")
-        status_counts["proportion"] = (
-            status_counts["count"] / status_counts["total_count"]
-        ).astype(float)
-        status_counts_per_constructor = status_counts.sort_values(
-            by=["constructorId", "count"], ascending=[True, False]
-        )
-        status_counts_per_constructor = status_counts_per_constructor.groupby(
-            "constructorId"
-        ).head(10)
-        status_counts_per_constructor = pd.merge(
-            status_counts_per_constructor, status_code, on="statusId"
-        )
-        status_counts_per_constructor = pd.merge(
-            status_counts_per_constructor,
-            f1_constructor[["constructorId", "name"]],
-            on="constructorId",
-        )
-        constructor_id = f1_constructor.query(f"name == '{constructeur}'")[
-            "constructorId"
-        ].values[0]
-        res = {
-            "contstructorId": int(constructor_id),
-            "name": constructeur,
-            "status_counts": status_counts_per_constructor.query(
-                f"constructorId == {constructor_id}"
-            )[["statusId", "status", "count", "proportion"]].to_dict(orient="records"),
-            "total_count": int(
-                total_counts.query(f"constructorId == {constructor_id}")[
-                    "total_count"
-                ].values[0]
-            ),
-        }
-        return res
+        # Group by circuitId
+        interesting_datas_by_circuit = interesting_datas.groupby("circuitRef")
+
+        # Create a dictionary of times per circuitId and qualifier
+        times_by_circuit_and_qual = {}
+        for circuitRef, group in interesting_datas_by_circuit:
+            for qual in ['q1', 'q2', 'q3']:
+                times = group[qual].dropna().tolist()
+                times_by_circuit_and_qual[(circuitRef, qual)] = times
+
+        # Compute the maximum time for each (circuitId, qualifier)
+        max_times_by_circuit_and_qual = {key: max(times) for key, times in times_by_circuit_and_qual.items() if times}
+
+        requete = circuit
+        max_time = {q: max_times_by_circuit_and_qual.get((requete, q), None) for q in ['q1', 'q2', 'q3']}
+
+        return max_time

@@ -1,6 +1,7 @@
 from fastapi import HTTPException, APIRouter
-from api.services.pilote_services import DefaultQuery
+from app.api.services.pilote_services import DefaultQuery
 import pandas as pd
+from options.config import DATA_DIR
 
 
 router = APIRouter()
@@ -27,3 +28,13 @@ async def meilleur_tour(localisation: str):
     if not circuits["location"].isin([localisation]).any():
         raise HTTPException(status_code=404, detail="Invalide location")
     return DefaultQuery.meilleur_temps(localisation)
+
+@router.get("/temps_dernier_qualif_{circuit}_{annee}")
+async def temps_max_qualif(circuit: str, annee: str):
+    circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
+    races = pd.read_csv(f"{DATA_DIR}/races.csv")
+    if not circuits["circuitRef"].isin([circuit]).any():
+        raise HTTPException(status_code=404, detail="Invalide circuit")
+    if not races["year"].isin([int(annee)]).any():
+        raise HTTPException(status_code=404, detail="Invalide annee")
+    return DefaultQuery.temps_min_qualif_annee(circuit, annee)
