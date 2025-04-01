@@ -15,14 +15,13 @@ for dico in results:
         winners.append(dico)
 
 
-
 def count_driver_ids(list_of_dicos):
     # Create an empty dictionary to store counts of driverId
     driver_id_counts = {}
 
     # Iterate through each dictionary in the list
     for dico in list_of_dicos:
-        driver_id = dico.get('driverId')  # Get the value of driverId
+        driver_id = dico.get("driverId")  # Get the value of driverId
         if driver_id:
             # Increment the count for this driverId
             if driver_id in driver_id_counts:
@@ -31,9 +30,13 @@ def count_driver_ids(list_of_dicos):
                 driver_id_counts[driver_id] = 1
 
     # Convert the driver_id_counts dictionary into a list of dictionaries
-    result = [{'driverId': driver_id, 'nb_victoires': count} for driver_id, count in driver_id_counts.items()]
+    result = [
+        {"driverId": driver_id, "nb_victoires": count}
+        for driver_id, count in driver_id_counts.items()
+    ]
 
     return result
+
 
 winners_victoires = count_driver_ids(winners)
 
@@ -44,4 +47,4 @@ for dico in winners_victoires:
         winners_victoires_name.append(dico)
 
 
-print(merge(winners_victoires_name,drivers,"driverId"))
+print(merge(winners_victoires_name, drivers, "driverId"))

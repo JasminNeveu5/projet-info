@@ -39,7 +39,9 @@ def left_join1(left_csv, right_csv, key_column):
             result.append({**left_row, **right_dict[key]})
         else:
             # If no match, keep left row and fill right side with empty values
-            result.append({**left_row, **{k: '' for k in right_dict.get(key, {}).keys()}})
+            result.append(
+                {**left_row, **{k: "" for k in right_dict.get(key, {}).keys()}}
+            )
 
     return result  # Returns a list of dictionaries representing the joined result
 
@@ -47,7 +49,7 @@ def left_join1(left_csv, right_csv, key_column):
 def left_join(left_csv_path, right_csv_path, key_column):
     # Read the right CSV file and store its content in a dictionary
     right_dict = {}
-    with open(right_csv_path, mode='r') as right_file:
+    with open(right_csv_path, mode="r") as right_file:
         right_reader = csv.DictReader(right_file)
         for row in right_reader:
             key = row[key_column]
@@ -55,7 +57,7 @@ def left_join(left_csv_path, right_csv_path, key_column):
 
     # Read the left CSV file and perform the left join
     result = []
-    with open(left_csv_path, mode='r') as left_file:
+    with open(left_csv_path, mode="r") as left_file:
         left_reader = csv.DictReader(left_file)
         for left_row in left_reader:
             key = left_row[key_column]
@@ -65,6 +67,8 @@ def left_join(left_csv_path, right_csv_path, key_column):
                 result.append({**left_row, **right_dict[key]})
             else:
                 # If no match, keep left row and fill right side with empty values
-                result.append({**left_row, **{k: '' for k in right_dict.get(key, {}).keys()}})
+                result.append(
+                    {**left_row, **{k: "" for k in right_dict.get(key, {}).keys()}}
+                )
 
     return result  # Returns a list of dictionaries representing the joined result

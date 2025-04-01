@@ -10,12 +10,24 @@ def get_ranking_victory(nb_victory: int) -> list[Driver]:
     results = pd.read_csv(f"{DATA_DIR}/results.csv")
     drivers = pd.read_csv(f"{DATA_DIR}/drivers.csv")
     winners = results[results["position"] == "1"]
-    winners_victoires = winners.groupby("driverId").size().reset_index(name="Nombre de victoires")
-    winners_victoires_name = pd.merge(winners_victoires,drivers,on = "driverId")[["forename","surname","nationality","Nombre de victoires"]].sort_values(by="Nombre de victoires",ascending=False)
+    winners_victoires = (
+        winners.groupby("driverId").size().reset_index(name="Nombre de victoires")
+    )
+    winners_victoires_name = pd.merge(winners_victoires, drivers, on="driverId")[
+        ["forename", "surname", "nationality", "Nombre de victoires"]
+    ].sort_values(by="Nombre de victoires", ascending=False)
     winners_victoires_name[winners_victoires_name["Nombre de victoires"] >= nb_victory]
 
     result = []
 
     for index, row in winners_victoires_name.iterrows():
-        result.append(Driver(id = index, forename = row["forename"], surname = row["surname"],nationality= row["nationality"], nombre_victoire = row["Nombre de victoires"]))
+        result.append(
+            Driver(
+                id=index,
+                forename=row["forename"],
+                surname=row["surname"],
+                nationality=row["nationality"],
+                nombre_victoire=row["Nombre de victoires"],
+            )
+        )
     return result

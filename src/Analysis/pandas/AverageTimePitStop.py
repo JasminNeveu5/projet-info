@@ -1,19 +1,20 @@
 import pandas as pd
-#from src.Common.utils import convert_to_human_readable, human_readable_formatter
-#import matplotlib.pyplot as plt
-#from matplotlib.ticker import FuncFormatter
+
+# from src.Common.utils import convert_to_human_readable, human_readable_formatter
+# import matplotlib.pyplot as plt
+# from matplotlib.ticker import FuncFormatter
 
 
 # Code
 
 
-pit_stops = pd.read_csv('C:/DEVOIRS/ENSAI1A/projet-info/data/pit_stops.csv')
-races = pd.read_csv('C:/DEVOIRS/ENSAI1A/projet-info/data/races.csv')
-jointure = pd.merge(pit_stops, races, on='raceId', how='left')
+pit_stops = pd.read_csv("C:/DEVOIRS/ENSAI1A/projet-info/data/pit_stops.csv")
+races = pd.read_csv("C:/DEVOIRS/ENSAI1A/projet-info/data/races.csv")
+jointure = pd.merge(pit_stops, races, on="raceId", how="left")
 
 
 def temps_moyen_pit_stops(circuit: str) -> float:
-    return jointure.groupby('year')['milliseconds'][circuit].mean()
+    return jointure.groupby("year")["milliseconds"][circuit].mean()
 
 
 # Graphique

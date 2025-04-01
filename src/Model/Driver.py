@@ -1,5 +1,7 @@
 class Driver:
-    def __init__(self, id:int, forename: str, surname:str, nationality:str,**kwargs):
+    def __init__(
+        self, id: int, forename: str, surname: str, nationality: str, **kwargs
+    ):
         if not isinstance(id, int):
             raise TypeError("id doit être de type int")
         if not isinstance(forename, str):
@@ -16,5 +18,7 @@ class Driver:
         self.additional_info = kwargs
 
     def __str__(self):
-        return (f"Forename: {self.forename} \nSurname: {self.surname}"
-                f"\nNationality: {self.nationality} \n{self.additional_info}")
+        return (
+            f"Forename: {self.forename} \nSurname: {self.surname}"
+            f"\nNationality: {self.nationality} \n{self.additional_info}"
+        )

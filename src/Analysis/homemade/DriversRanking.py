@@ -7,13 +7,16 @@ def count_driver_ids(list_of_dicos):
     driver_id_counts = {}
 
     for dico in list_of_dicos:
-        driver_id = dico.get('driverId')
+        driver_id = dico.get("driverId")
         if driver_id:
             if driver_id in driver_id_counts:
                 driver_id_counts[driver_id] += 1
             else:
                 driver_id_counts[driver_id] = 1
-    result = [{'driverId': driver_id, 'nb_victoires': count} for driver_id, count in driver_id_counts.items()]
+    result = [
+        {"driverId": driver_id, "nb_victoires": count}
+        for driver_id, count in driver_id_counts.items()
+    ]
     return result
 
 
@@ -44,5 +47,13 @@ def get_ranking_victory(nb_victory: int):
     full = merge(winners_victoires_name, drivers, "driverId")
     l = []
     for ligne in full:
-        l.append(Driver(id = int(ligne["driverId"]), forename = ligne["forename"], surname = ligne["surname"],nationality= ligne["nationality"], nombre_victoire = ligne["nb_victoires"]))
+        l.append(
+            Driver(
+                id=int(ligne["driverId"]),
+                forename=ligne["forename"],
+                surname=ligne["surname"],
+                nationality=ligne["nationality"],
+                nombre_victoire=ligne["nb_victoires"],
+            )
+        )
     return l
