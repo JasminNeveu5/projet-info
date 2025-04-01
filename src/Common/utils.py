@@ -18,3 +18,13 @@ def merge(table1, table2, key):
             merged_table.append(merged_row)
 
     return merged_table
+
+
+def convert_to_human_readable(milliseconds):
+    minutes = milliseconds // 60000
+    seconds = (milliseconds % 60000) // 1000
+    return f"{minutes}m {seconds}s"
+
+
+def human_readable_formatter(x,pos):
+    return convert_to_human_readable(int(x))
