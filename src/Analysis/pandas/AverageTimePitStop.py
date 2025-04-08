@@ -13,7 +13,7 @@ jointure = pd.merge(pit_stops, races, on="raceId", how="left")
 
 
 def AverageTimePitStop(circuit: str) -> float:
-    return jointure.groupby('year').agg('milliseconds').mean()
+    return jointure.groupby('year').agg('milliseconds').mean()  # filtrer par circuit
     #return jointure.groupby('year')['milliseconds'][circuit].mean()
 
 
