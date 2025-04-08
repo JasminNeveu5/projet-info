@@ -18,7 +18,17 @@ class Driver:
         self.additional_info = kwargs
 
     def __str__(self):
+        additional_info_str = (
+            "\n".join(
+                [f"{key}: {value}" for key, value in self.additional_info.items()]
+            )
+            if self.additional_info
+            else "No additional info"
+        )
+
         return (
-            f"Forename: {self.forename} \nSurname: {self.surname}"
-            f"\nNationality: {self.nationality} \n{self.additional_info}"
+            f"Forename: {self.forename}\n"
+            f"Surname: {self.surname}\n"
+            f"Nationality: {self.nationality}\n"
+            f"{additional_info_str}"
         )

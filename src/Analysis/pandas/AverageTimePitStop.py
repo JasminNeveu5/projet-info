@@ -1,4 +1,6 @@
 import pandas as pd
+from options.config import DATA_DIR
+
 
 # from src.Common.utils import convert_to_human_readable, human_readable_formatter
 # import matplotlib.pyplot as plt
@@ -8,8 +10,9 @@ import pandas as pd
 # Code
 
 
-pit_stops = pd.read_csv("C:/DEVOIRS/ENSAI1A/projet-info/data/pit_stops.csv")
-races = pd.read_csv("C:/DEVOIRS/ENSAI1A/projet-info/data/races.csv")
+
+pit_stops = pd.read_csv(f"{DATA_DIR}/pit_stops.csv")
+races = pd.read_csv(f"{DATA_DIR}/races.csv")
 jointure = pd.merge(pit_stops, races, on="raceId", how="left")
 
 
