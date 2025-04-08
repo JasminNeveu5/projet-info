@@ -10,23 +10,29 @@ import matplotlib.pyplot as plt
 pit_stops = pd.read_csv(f"{DATA_DIR}/pit_stops.csv")
 races = pd.read_csv(f"{DATA_DIR}/races.csv")
 jointure = pd.merge(pit_stops, races, on="raceId", how="left")
+circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
+circuits = circuits[['circuitId', 'name']]
+circuits = circuits.rename(columns={'name': 'nom_circuit'})
+jointure = pd.merge(jointure, circuits, on="circuitId", how="left")
 
 
-def AverageTimePitStop(circuit: str) -> float:
-    return jointure.groupby('year').agg('milliseconds').mean()  # filtrer par circuit
-    #return jointure.groupby('year')['milliseconds'][circuit].mean()
+# Fonction
+
+
+def AverageTimePitStop(circuit_demande: str) -> float:
+    return jointure.groupby('year').agg('milliseconds').mean()  # à faire : filtrer par circuit
+
+
+# Exemple pris
+
+
+name = 'Australian Grand Prix'
 
 
 # Graphique
 
 
-name = 'Australian Grand Prix'
-print(AverageTimePitStop(name))
-
-
 temps_moyen_pit_stops_readable = AverageTimePitStop(name).map(convert_to_human_readable)
-
-
 plt.figure(figsize=(10, 6))
 AverageTimePitStop(name).plot(
     x='year',
