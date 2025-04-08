@@ -1,22 +1,20 @@
 import pandas as pd
-from Common.utils import human_readable_formatter, convert_to_human_readable
-import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
+#from src.Common.utils import convert_to_human_readable, human_readable_formatter
+#import matplotlib.pyplot as plt
+#from matplotlib.ticker import FuncFormatter
 
 
 # Import et création de la table utilisée
 
 
-pit_stops = pd.read_csv('C:/DEVOIRS/ENSAI1A/projet-info/data/pit_stops.csv')
-races = pd.read_csv('C:/DEVOIRS/ENSAI1A/projet-info/data/races.csv')
-jointure = pd.merge(pit_stops, races, on='raceId', how='left')
+
+pit_stops = pd.read_csv(f"{DATA_DIR}/pit_stops.csv")
+races = pd.read_csv(f"{DATA_DIR}/races.csv")
+jointure = pd.merge(pit_stops, races, on="raceId", how="left")
 
 
-# Fonction
-
-
-def AverageTimePitStop(GrandPrix: str) -> float:
-    return jointure[jointure['name'] == GrandPrix].groupby('year')['milliseconds'].mean()
+def temps_moyen_pit_stops(circuit: str) -> float:
+    return jointure.groupby('year')['milliseconds'][circuit].mean()
 
 
 # Graphique
