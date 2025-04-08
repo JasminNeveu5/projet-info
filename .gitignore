@@ -3,3 +3,4 @@ app/api/__pycache__/
 questions_obligatoires/test.ipynb
 __pycache__/
 questions_obligatoires/__pycache__/
+src/__pycache__
