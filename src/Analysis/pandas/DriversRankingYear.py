@@ -4,6 +4,21 @@ from src.Model.Driver import Driver
 
 
 def get_ranking_year(year: int):
+    """
+    Generates a ranking of drivers for a specified year based on their performance
+    in races during that year. The ranking considers overall points, number of wins,
+    second places, and third places to rank drivers in descending order.
+
+    :param year: The year for which the driver ranking is to be generated. Must be
+        an integer between 1950 and 2024 inclusive.
+    :type year: int
+    :return: A list of Driver objects with the ranking results, where each object
+        contains driver details (ID, forename, surname, nationality) and their total
+        points for the specified year.
+    :rtype: List[Driver]
+    :raises TypeError: If the input `year` is not an integer.
+    :raises ValueError: If the input `year` is outside the range [1950, 2024].
+    """
     if not isinstance(year, int):
         raise TypeError("year doit être de type int")
     if year < 1950 or year > 2024:
