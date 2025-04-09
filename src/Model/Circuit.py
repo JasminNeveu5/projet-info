@@ -22,6 +22,7 @@ class Circuit:
 
         return (
             f"Name: {self.name}\n"
-            f"Date: {self.date}\n"
+            f"Location: {self.location}\n"
+            f"Country: {self.country}\n"
             f"{additional_info_str}"
         )
