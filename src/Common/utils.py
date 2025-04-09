@@ -41,7 +41,6 @@ def merge(table1, table2, key):
 
     return merged_table
 
-<<<<<<< HEAD
 
 def convert_to_human_readable(milliseconds):
     minutes = milliseconds // 60000
@@ -51,7 +50,8 @@ def convert_to_human_readable(milliseconds):
 
 def human_readable_formatter(x,pos):
     return convert_to_human_readable(int(x))
-=======
+
+
 # Fonction utilitaire pour fusionner deux listes de dictionnaires par une clé
 def merge_dicts(left, right, key):
     """
@@ -78,6 +78,7 @@ def merge_dicts(left, right, key):
     right_lookup = {item[key]: item for item in right}
     return [{**item, **right_lookup[item[key]]} for item in left if item[key] in right_lookup]
 
+
 def time_to_seconds(time_str):
     """
     Converts a time string in the format "MM:SS.sss" into total seconds as a float.
@@ -102,4 +103,3 @@ def time_to_seconds(time_str):
         return total_seconds
     except ValueError:
         return None
->>>>>>> 8e13a249556e7eb2b59f81a98720f505adafeb1a

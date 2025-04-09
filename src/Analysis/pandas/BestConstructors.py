@@ -1,6 +1,5 @@
 import pandas as pd
 from options.config import DATA_DIR
-import numpy as np
 import matplotlib.pyplot as plt
 
 
