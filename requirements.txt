@@ -1,8 +1,16 @@
-pandas
-fastapi
+pandas~=2.2.3
+fastapi~=0.115.11
 black
 isort
 black[jupiter]
-seaborn
-pathlib
+seaborn~=0.13.2
+pathlib~=1.0.1
 
+
+matplotlib~=3.10.1
+numpy~=2.2.4
+pytest~=8.3.5
+folium~=0.19.5
+requests~=2.32.3
+ipywidgets~=8.1.5
+ipython~=9.0.2
