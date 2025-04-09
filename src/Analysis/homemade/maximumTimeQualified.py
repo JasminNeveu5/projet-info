@@ -1,10 +1,10 @@
 from src.Common.utils import merge_dicts, read_csv, time_to_seconds
-
+from options.config import DATA_DIR
 
 # Lire les données
-qualif = read_csv("../../../data/qualifying.csv")
-circuits = read_csv("../../../data/circuits.csv")
-races = read_csv("../../../data/races.csv")
+qualif = read_csv(f"{DATA_DIR}/qualifying.csv")
+circuits = read_csv(f"{DATA_DIR}/circuits.csv")
+races = read_csv(f"{DATA_DIR}/races.csv")
 
 # Fusionner les courses et les circuits par circuitId
 races_plus_circuits = merge_dicts(races, circuits, "circuitId")
