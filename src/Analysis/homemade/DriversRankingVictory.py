@@ -55,7 +55,7 @@ def get_ranking_victory(nb_victory: int):
                 forename=ligne["forename"],
                 surname=ligne["surname"],
                 nationality=ligne["nationality"],
-                nombre_victoire=ligne["nb_victoires"],
+                nombre_victoire=ligne["nb_victoires"]
             )
         )
     return l

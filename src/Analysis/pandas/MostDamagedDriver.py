@@ -3,7 +3,10 @@ import pandas as pd
 from options.config import DATA_DIR
 
 
-def most_damaged_driver(nombre_courses_minimum):
+def most_damaged_driver(nombre_courses_minimum = 0):
+    if not isinstance(nombre_courses_minimum, int):
+        raise TypeError("nombre_courses_minimum doit être de type int")
+
     results = pd.read_csv(f"{DATA_DIR}/results.csv")
     drivers = pd.read_csv(f"{DATA_DIR}/drivers.csv")
 
@@ -32,3 +35,5 @@ def most_damaged_driver(nombre_courses_minimum):
             )
         )
     return result
+
+print(most_damaged_driver(300)[0])
