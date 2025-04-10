@@ -50,7 +50,9 @@ def convert_to_human_readable(milliseconds):
 
 def human_readable_formatter(x,pos):
     return convert_to_human_readable(int(x))
-=======
+
+
+
 # Fonction utilitaire pour fusionner deux listes de dictionnaires par une clé
 def merge_dicts(left, right, key):
     """

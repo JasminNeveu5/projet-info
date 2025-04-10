@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from options.config import DATA_DIR
 import matplotlib.pyplot as plt
 
@@ -17,7 +18,7 @@ jointure = jointure[['name_x', 'year', 'wins']]
 
 def BestConstructors(wanted_year):
     result = jointure[jointure['year'] == wanted_year].groupby('name_x').apply(np.sum, axis=0).sort_values('wins', ascending=False) # agg({'wins':sum}))
-    result['name_x'] = result.index
+    result['name'] = result.index
     return result
 
 
@@ -31,7 +32,7 @@ wanted_year = 2003
 
 
 BestConstructors(wanted_year).plot.bar(
-    x='name_x',
+    x='name',
     y='wins',
     color='darkmagenta'
 )
