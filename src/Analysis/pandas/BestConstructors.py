@@ -10,7 +10,7 @@ races = pd.read_csv(f'{DATA_DIR}/races.csv')
 
 jointure = pd.merge(constructor_standings, constructors, on='constructorId', how='left')
 jointure = pd.merge(jointure, races, on='raceId', how='left')
-jointure = jointure[['name_x', 'year', 'wins','nationality']]
+jointure = jointure[['name_x', 'year', 'wins', 'nationality']]
 
 
 # Fonction
@@ -28,7 +28,7 @@ def BestConstructors(wanted_year):
             Constructor(
                 name=row['name'],
                 nationality=row['nationality'],
-                nombre_victoire=row['wins'],
+                wins=row['wins'],
             )
         )
 
