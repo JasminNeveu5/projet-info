@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from options.config import DATA_DIR
 from src.Model.constructor import Constructor
-import matplotlib.pyplot as plt
 
 
 constructor_standings = pd.read_csv(f'{DATA_DIR}/constructor_standings.csv')
@@ -33,26 +32,4 @@ def BestConstructors(wanted_year):
             )
         )
 
-    return result
-
-print(BestConstructors(2003))
-
-# Exemple pris
-
-
-wanted_year = 2003
-
-
-# Graphique
-
-
-BestConstructors(wanted_year).plot.bar(
-    x='name',
-    y='wins',
-    color='darkmagenta'
-)
-plt.title(f'Nombre de victoires par constructeur en {wanted_year}', fontsize=20)
-plt.xlabel("Constructeurs", fontsize=14)
-plt.ylabel("Nombre de victoires", fontsize=14)
-plt.tight_layout()
-plt.show()
+    return BestConstructorList
