@@ -53,7 +53,6 @@ def get_ranking_year(year: int):
     for index, row in r.iterrows():
         result.append(
             Driver(
-                id=row["driverId"],
                 forename=row["forename"],
                 surname=row["surname"],
                 nationality=row["nationality"],

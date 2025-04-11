@@ -35,7 +35,6 @@ def most_damaged_driver(nombre_courses_minimum):
     for index, row in results_total.iterrows():
         result.append(
             Driver(
-                id=row["driverId"],
                 forename=row["forename"],
                 surname=row["surname"],
                 nationality=row["nationality"],

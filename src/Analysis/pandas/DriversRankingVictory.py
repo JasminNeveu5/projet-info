@@ -43,7 +43,6 @@ def get_ranking_victory(nb_victory: int) -> list[Driver]:
     for index, row in winners_victoires_name.iterrows():
         result.append(
             Driver(
-                id=index,
                 forename=row["forename"],
                 surname=row["surname"],
                 nationality=row["nationality"],

@@ -33,7 +33,6 @@ def home_win(nationalite):
     for index, row in compare.iterrows():
         result.append(
             Driver(
-                id=row["driverId"],
                 forename=row["forename"],
                 surname=row["surname"],
                 nationality=row["nationality"],
