@@ -1,6 +1,6 @@
 import pandas as pd
 from options.config import DATA_DIR
-from src.Common.utils import convert_to_human_readable, human_readable_formatter
+from src.Common.utils import convert_milliseconds_to_time, human_readable_formatter
 from matplotlib.ticker import FuncFormatter
 import matplotlib.pyplot as plt
 
@@ -32,7 +32,7 @@ name = 'Australian Grand Prix'
 # Graphique
 
 
-temps_moyen_pit_stops_readable = AverageTimePitStop(name).map(convert_to_human_readable)
+temps_moyen_pit_stops_readable = AverageTimePitStop(name).map(convert_milliseconds_to_time)
 plt.figure(figsize=(10, 6))
 AverageTimePitStop(name).plot(
     x='year',

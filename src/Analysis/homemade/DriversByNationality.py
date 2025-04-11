@@ -1,20 +1,33 @@
 import csv
 from options.config import DATA_DIR
+import src.Model.Driver as d
 import matplotlib.pyplot as plt
 import numpy as np
 
 
 def DriversByNationality(wanted_nationality):
-    with open(f'{DATA_DIR}/drivers.csv', encoding='utf-8', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        drivers_list = []
-        nb_line = 0
-        for row in reader:
-            nb_line += 1
-            if row['nationality'] == wanted_nationality:
-                drivers_list.append(f'{row['forename']} {row['surname']}')
-    nationality_proportion = len(drivers_list)/nb_line
-    return nationality_proportion, drivers_list
+    if not isinstance(wanted_nationality, str):
+        raise TypeError('The wanted nationality should be a string.')
+    else:
+        with open(f'{DATA_DIR}/drivers.csv', encoding='utf-8', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            drivers_list = []
+            nb_line = 0
+            for row in reader:
+                nb_line += 1
+                if row['nationality'] == wanted_nationality:
+                    driver = d.Driver(
+                        int(row['driverId']),
+                        row['forename'],
+                        row['surname'],
+                        row['nationality'],
+                    )
+                    drivers_list.append(driver)
+        if len(drivers_list) == 0:
+            raise ValueError('There is no driver with this nationality.')
+        else:
+            nationality_proportion = len(drivers_list)/nb_line
+            return nationality_proportion, drivers_list
 
 
 # Exemple pris

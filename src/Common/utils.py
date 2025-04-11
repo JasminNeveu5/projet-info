@@ -7,11 +7,23 @@ def read_csv(filepath):
     :type filepath: str
     :return: A list of dictionaries where each dictionary corresponds to a row in the CSV file.
     :rtype: list[dict[str, str]]
+    :raises ValueError: If a row contains too many or too few values compared to the header.
     """
     with open(filepath, "r", encoding="utf-8") as f:
         lines = f.readlines()
+        if not lines:
+            return []
         header = lines[0].strip().split(",")
-        return [dict(zip(header, line.strip().split(","))) for line in lines[1:]]
+        rows = [line.strip().split(",") for line in lines[1:]]
+
+        for idx, row in enumerate(rows):
+            if len(row) != len(header):
+                raise ValueError(
+                    f"Row {idx + 1} has an incorrect number of values. "
+                    f"Expected {len(header)}, got {len(row)}."
+                )
+
+        return [dict(zip(header, row)) for row in rows]
 
 
 def merge(table1, table2, key):
@@ -42,15 +54,27 @@ def merge(table1, table2, key):
     return merged_table
 
 
-def convert_to_human_readable(milliseconds):
+def convert_milliseconds_to_time(milliseconds):
+    """
+    Converts a given time in milliseconds to a human-readable format.
+
+    The function takes a time duration in milliseconds and converts it into
+    a string format that represents the duration in minutes and seconds.
+
+    :param milliseconds: The duration in milliseconds that needs to be
+        converted.
+    :type milliseconds: int
+    :return: A string representing the given time in a human-readable
+        format, displaying the duration in minutes and seconds.
+    :rtype: str
+    """
     minutes = milliseconds // 60000
     seconds = (milliseconds % 60000) // 1000
     return f"{minutes}m {seconds}s"
 
 
-def human_readable_formatter(x,pos):
-    return convert_to_human_readable(int(x))
-
+def human_readable_formatter(x, pos):
+    return convert_milliseconds_to_time(int(x))
 
 
 # Fonction utilitaire pour fusionner deux listes de dictionnaires par une clé

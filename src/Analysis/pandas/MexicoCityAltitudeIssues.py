@@ -1,6 +1,5 @@
 from options.config import DATA_DIR
 import pandas as pd
-import numpy as np
 
 
 # Fonction
