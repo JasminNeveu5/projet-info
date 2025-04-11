@@ -1,11 +1,11 @@
 class Constructor:
-    def __init__(self, name, country, **kwargs):
+    def __init__(self, name, nationality, **kwargs):
         if not isinstance(name, str):
             raise TypeError("name must be a string")
-        if not isinstance(country, str):
+        if not isinstance(nationality, str):
             raise TypeError("country must be a string")
         self.name = name
-        self.country = country
+        self.nationality = nationality
         self.additional_info = kwargs
 
     def __str__(self):
@@ -19,6 +19,6 @@ class Constructor:
 
         return (
             f"Name: {self.name}\n"
-            f"Country: {self.country}\n"
+            f"Country: {self.nationality}\n"
             f"{additional_info_str}"
         )

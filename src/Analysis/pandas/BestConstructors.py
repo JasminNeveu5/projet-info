@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from options.config import DATA_DIR
-from src.Model import Constructor
+from src.Model.constructor import Constructor
 import matplotlib.pyplot as plt
 
 
@@ -21,18 +21,14 @@ def BestConstructors(wanted_year):
     result = jointure[jointure['year'] == wanted_year].groupby('name_x').apply(np.sum, axis=0).sort_values('wins', ascending=False)
     result['name'] = result.index
     result = result[['name', 'nationality', 'wins']]
-    print(result)
-    print(result.columns)
 
-    BestConstructorsList = []
+    BestConstructorList = []
 
-    for row in result.iterrows():
-        print(row[0], row[1], len(row))
-
-        BestConstructorsList.append(
+    for index, row in result.iterrows():
+        BestConstructorList.append(
             Constructor(
                 name=row['name'],
-                nationality=row['natinality'],
+                nationality=row['nationality'],
                 nombre_victoire=row['wins'],
             )
         )
