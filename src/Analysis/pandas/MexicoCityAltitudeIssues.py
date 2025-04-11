@@ -22,3 +22,6 @@ def MexicoCityAltitudeIssue(wanted_status):
         (jointure['status'] == wanted_status) & (jointure['location'] == 'Mexico City')
         ].groupby('location').value_counts()[0]
     return float(moyenne), float(nombre_mexico)
+
+
+print(MexicoCityAltitudeIssue('Engine'))
