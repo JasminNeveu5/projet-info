@@ -99,7 +99,10 @@ class Pretraitement:
         # Filter the DataFrame to keep only rows with circuits in the 2025 season
         df = df[df["race_name"].isin(circuits_2025)]
 
+       
+        # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
 
+        
         return df
 
 # Adding a progress bar for the preparation process
