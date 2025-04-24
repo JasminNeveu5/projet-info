@@ -59,19 +59,15 @@ class Pretraitement:
         df["positionCircuitN2"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-2)
         df["positionCircuitN3"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-3)
 
+       
+        # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
+
         
-        #TODO: garder seulement les pilotes de la saison 2025
-
-
         return df
 
 
-
-print("start")
 data = Pretraitement.prepare()
+data.dropna(inplace = True)
 data.to_csv(f"{DATA_DIR}/df.csv",index = False)
-print("finish")
-
-
 
 
