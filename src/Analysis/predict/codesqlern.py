@@ -67,8 +67,20 @@ def predict_race_winner(model, driver_name, race_name, df):
     # Create a row with the same structure as training data
     # We'll use median values for numerical features as defaults
     # In a real application, you'd want to use actual recent data for the driver
-    drivers_2025 = ['Lando Norris', 'Charles Leclerc', 'Lewis Hamilton', 'George Russell', 'Max Verstappen', 'Alexander Albon', 'Carlos Sainz', 'Esteban Ocon', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Yuki Tsunoda', 'Nico Hülkenberg']
-    if not driver_name in drivers_2025:
+    pilotes_2025 = ['Lando Norris',
+        'Charles Leclerc',
+        'Lewis Hamilton',
+        'George Russell',
+        'Max Verstappen',
+        'Carlos Sainz',
+        'Esteban Ocon',
+        'Fernando Alonso',
+        'Lance Stroll',
+        'Pierre Gasly',
+        'Yuki Tsunoda',
+        'Nico Hülkenberg'
+    ]
+    if not driver_name in pilotes_2025:
         raise ValueError("Le pilote doit participer à la saison 2025.")
 
     # Create a dictionary with all features set to 0 initially
@@ -119,15 +131,13 @@ if __name__ == "__main__":
     model = train_model(X, y)
 
     # Example prediction
-    race = "Silverstone Circuit"
+    race = "Suzuka Circuit"
 
-    drivers_2025 = [
-        'Lando Norris',
+    pilotes_2025 = ['Lando Norris',
         'Charles Leclerc',
         'Lewis Hamilton',
         'George Russell',
         'Max Verstappen',
-        'Alexander Albon',
         'Carlos Sainz',
         'Esteban Ocon',
         'Fernando Alonso',
@@ -135,10 +145,10 @@ if __name__ == "__main__":
         'Pierre Gasly',
         'Yuki Tsunoda',
         'Nico Hülkenberg'
-        ]
+    ]
 
     print(f"Course:{race} \n")
-    for driver in drivers_2025[::-1]:
+    for driver in pilotes_2025[::-1]:
         print("------ \n")
         print(driver)
         will_win, probability = predict_race_winner(model, driver, race, data)
