@@ -1,6 +1,6 @@
 import csv
 from options.config import DATA_DIR
-import src.Model.Driver as d
+import src.Model.driver as d
 import matplotlib.pyplot as plt
 import numpy as np
 
