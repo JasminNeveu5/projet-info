@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from options.config import DATA_DIR
-from src.Model.constructor import Constructor
+from src.Model.Constructor import Constructor
 
 
 constructor_standings = pd.read_csv(f'{DATA_DIR}/constructor_standings.csv')
