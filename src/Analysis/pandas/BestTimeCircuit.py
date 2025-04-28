@@ -4,6 +4,12 @@ from src.Common.utils import convert_to_human_readable
 from src.Model.Circuit import Circuit
 
 def bestTimeCircuit(localisation: str):
+    """Renvoie le meilleur temps de circuit pour une localisation donnée.
+    Args:
+        localisation (str): La localisation du circuit.
+    Returns:
+            Circuit: Un objet Circuit contenant le meilleur temps de circuit.
+    """
     if not isinstance(localisation, str):
         raise TypeError("localisation doit être de type str")
 

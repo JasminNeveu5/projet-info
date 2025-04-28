@@ -119,7 +119,7 @@ if __name__ == "__main__":
     model = train_model(X, y)
     
     # Example prediction
-    race = "Silverstone Circuit"  # Replace with actual circuit name
+    race = "Silverstone Circuit"
     
     drivers_2025 = ['Lando Norris', 'Charles Leclerc', 'Lewis Hamilton', 'George Russell', 'Max Verstappen','Alexander Albon', 'Carlos Sainz', 'Esteban Ocon','Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Yuki Tsunoda', 'Nico Hülkenberg']
 

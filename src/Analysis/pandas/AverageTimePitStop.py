@@ -18,7 +18,7 @@ jointure = pd.merge(jointure, circuits, on="circuitId", how="left")
 
 # Fonction
 
-# TO DO : filtrer par circuit
+# TODO: filtrer par circuit
 def AverageTimePitStop(circuit_demande: str) -> float:
     return jointure.groupby('year').agg('milliseconds').mean()
 
