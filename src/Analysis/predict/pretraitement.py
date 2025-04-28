@@ -65,44 +65,61 @@ class Pretraitement:
         df["positionCircuitN2"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-2)
         df["positionCircuitN3"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-3)
 
+        # Calcul du numéro de qualification sur les dernières courses effectuées sur le circuit
+        df["qualifCircuitN1"] = df.groupby(["driverId", "race_name"])["grid"].shift(-1)
+        df["qualifCircuitN2"] = df.groupby(["driverId", "race_name"])["grid"].shift(-2)
+        df["qualifCircuitN3"] = df.groupby(["driverId", "race_name"])["grid"].shift(-3)
+
+        # Replace grid positions with qualification groups
+        def grid_to_qualif_group(grid_position):
+            if 1 <= grid_position <= 10:
+                return "q3"
+            elif 11 <= grid_position <= 15:
+                return "q2"
+            elif 16 <= grid_position <= 20:
+                return "q1"
+            else:
+                return None
+
+        df["qualifCircuitN1"] = df["qualifCircuitN1"].apply(lambda x: grid_to_qualif_group(x) if pd.notna(x) else None)
+        df["qualifCircuitN2"] = df["qualifCircuitN2"].apply(lambda x: grid_to_qualif_group(x) if pd.notna(x) else None)
+        df["qualifCircuitN3"] = df["qualifCircuitN3"].apply(lambda x: grid_to_qualif_group(x) if pd.notna(x) else None)
 
         # Keeping values only coherent with the 2025 season (https://fr.wikipedia.org/wiki/Championnat_du_monde_de_Formule_1_2025#Grands_Prix_de_la_saison_2025)
 
         # List of circuits for the 2025 season
         circuits_2025 = [
-            "Melbourne Grand Prix Circuit", # never trained
+            "Albert Park Grand Prix Circuit",
             "Shanghai international Circuit",
             "Suzuka Circuit",
             "Bahrain International Circuit",
             "Jeddah Corniche Circuit",
             "Miami International Autodrome", # never trained
-            "Autodromo Enzo e Dino Ferrari", #TODO: below check if it is right
+            "Autodromo Enzo e Dino Ferrari", 
             "Circuit de Monaco",
             "Circuit de Barcelona-Catalunya",
-            "Circuit Gilles-Villeneuve",
+            "Circuit Gilles Villeneuve",
             "Red Bull Ring",
             "Silverstone Circuit",
             "Circuit de Spa-Francorchamps",
-            "Circuit Magyar Nagydij",
-            "Circuit Zandvoort",
-            "Autodromo Nazionale Monza",
+            "Circuit Magyar Nagydij", # not in circuits.csv
+            "Circuit Park Zandvoort",
+            "Autodromo Nazionale di Monza",
             "Baku City Circuit",
             "Marina Bay Street Circuit",
             "Circuit of The Americas",
             "Autódromo Hermanos Rodríguez",
             "Autódromo José Carlos Pace",
-            "Circuit Silver Las Vegas",
-            "Lusail international Circuit",
+            "Circuit Silver Las Vegas", # not in circuits.csv
+            "Lusail international Circuit", # not in circuits.csv
             "Yas Marina Circuit"
         ]
 
         # Filter the DataFrame to keep only rows with circuits in the 2025 season
         df = df[df["race_name"].isin(circuits_2025)]
 
-       
         # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
 
-        
         return df
 
 # Adding a progress bar for the preparation process
