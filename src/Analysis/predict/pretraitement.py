@@ -99,6 +99,26 @@ class Pretraitement:
         # Filter the DataFrame to keep only rows with circuits in the 2025 season
         df = df[df["race_name"].isin(circuits_2025)]
 
+        # Filter les drivers
+
+        pilotes_2025 = ['Lando Norris',
+'Oscar Piastri',
+ 'Charles Leclerc',
+ 'Lewis Hamilton',
+ 'George Russell',
+ 'Max Verstappen',
+ 'Liam Lawson',
+ 'Alexander Albon',
+ 'Carlos Sainz',
+ 'Esteban Ocon',
+ 'Oliver Bearman',
+ 'Fernando Alonso',
+ 'Lance Stroll',
+ 'Pierre Gasly',
+ 'Yuki Tsunoda',
+ 'Nico Hülkenberg']
+
+        df = df[df["driver_name"].isin(pilotes_2025)]
        
         # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
 
