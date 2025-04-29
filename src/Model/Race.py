@@ -1,8 +1,8 @@
 class Race:
-    def __init__(self,year, name, date, **kwargs):
+    def __init__(self, year, name, date, **kwargs):
         if not isinstance(name, str):
             raise TypeError("name doit être de type string")
-        if not isinstance(year,int):
+        if not isinstance(year, int):
             raise TypeError("year doit être de type string")
         if not isinstance(date, str):
             raise TypeError("date doit être de type string")
@@ -20,8 +20,4 @@ class Race:
             else "No additional info"
         )
 
-        return (
-            f"Name: {self.name}\n"
-            f"Date: {self.date}\n"
-            f"{additional_info_str}"
-        )
+        return f"Name: {self.name}\n" f"Date: {self.date}\n" f"{additional_info_str}"

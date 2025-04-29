@@ -46,7 +46,7 @@ def get_ranking_year(year: int):
     )
 
     r = pd.merge(sorted_drivers, drivers, on="driverId")[
-            ["driverId","forename", "surname","nationality" ,"points"]
+        ["driverId", "forename", "surname", "nationality", "points"]
     ]
 
     result = []
