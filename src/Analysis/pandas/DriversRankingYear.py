@@ -31,9 +31,7 @@ def get_ranking_year(year: int):
     races_year["positionOrder"] = races_year["positionOrder"].astype(int)
     races_year["points"] = races_year.apply(get_points, axis=1)
 
-    # Add points for fastest lap
-    fastest_lap = races_year[(races_year["fastestLap"] != 0)]
-    races_year.loc[fastest_lap.index, "points"] += FASTEST_LAP_POINTS
+
 
     points_wins = (
         races_year.groupby("driverId")
