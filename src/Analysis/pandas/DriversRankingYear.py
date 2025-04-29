@@ -2,23 +2,19 @@ import pandas as pd
 from options.config import DATA_DIR
 from src.Model.Driver import Driver
 
+# Points tables
+GP_POINTS = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
+SPRINT_POINTS = {1: 8, 2: 7, 3: 6, 4: 5, 5: 4, 6: 3, 7: 2, 8: 1}
+FASTEST_LAP_POINTS = 1  # Points for the fastest lap
+
+def get_points(row):
+    pos = row["positionOrder"]
+    if row["Sprint"]:
+        return SPRINT_POINTS.get(pos, 0)
+    else:
+        return GP_POINTS.get(pos, 0)
 
 def get_ranking_year(year: int):
-    """
-    Generates a ranking of drivers for a specified year based on their performance
-    in races during that year. The ranking considers overall points, number of wins,
-    second places, and third places to rank drivers in descending order.
-
-    :param year: The year for which the driver ranking is to be generated. Must be
-        an integer between 1950 and 2024 inclusive.
-    :type year: int
-    :return: A list of Driver objects with the ranking results, where each object
-        contains driver details (ID, forename, surname, nationality) and their total
-        points for the specified year.
-    :rtype: List[Driver]
-    :raises TypeError: If the input `year` is not an integer.
-    :raises ValueError: If the input `year` is outside the range [1950, 2024].
-    """
     if not isinstance(year, int):
         raise TypeError("year doit être de type int")
     if year < 1950 or year > 2024:
@@ -27,8 +23,18 @@ def get_ranking_year(year: int):
     drivers = pd.read_csv(f"{DATA_DIR}/drivers.csv")
     races = pd.read_csv(f"{DATA_DIR}/races.csv")
 
-    races_year = pd.merge(results, races[races["year"] == year], on="raceId")
+    # Ensure 'Sprint' column exists in races DataFrame
+    if "Sprint" not in races.columns:
+        races["Sprint"] = False  # Default to False if not present
+
+    races_year = pd.merge(results, races[races["year"] == year][["raceId", "Sprint"]], on="raceId")
     races_year["positionOrder"] = races_year["positionOrder"].astype(int)
+    races_year["points"] = races_year.apply(get_points, axis=1)
+
+    # Add points for fastest lap
+    fastest_lap = races_year[(races_year["fastestLap"] != 0)]
+    races_year.loc[fastest_lap.index, "points"] += FASTEST_LAP_POINTS
+
     points_wins = (
         races_year.groupby("driverId")
         .agg(
@@ -60,3 +66,10 @@ def get_ranking_year(year: int):
             )
         )
     return result
+
+if __name__ == "__main__":
+    year = 2023
+    ranking = get_ranking_year(year)
+    for driver in ranking:
+        print(
+            f"{driver.forename} {driver.surname} ({driver.nationality}) - Points: {driver.additional_info['nb_points']}")
