@@ -1,5 +1,3 @@
-
-
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -12,32 +10,38 @@ from options.config import DATA_DIR
 # Assuming you have a CSV file with the structure you described
 data = pd.read_csv(f"{DATA_DIR}/df.csv")
 
+
 # Preprocess the data
 def preprocess_data(df):
     # Create the target variable - whether the driver won the race (positionOrder == 1)
-    df['won_race'] = df['positionOrder'] == 1
+    df["won_race"] = df["positionOrder"] == 1
 
     # Convert categorical variables to numerical (if needed)
-    df = pd.get_dummies(df, columns=['driver_name', 'race_name'], drop_first=True)
+    df = pd.get_dummies(df, columns=["driver_name", "race_name"], drop_first=True)
 
     # Select features - adjust based on your feature importance analysis
     features = [
-        'grid',
-        'positionN1', 'positionN2', 'positionN3',
-        'averageTimeCircuit',
-        'positionCircuitN1', 'positionCircuitN2', 'positionCircuitN3'
+        "grid",
+        "positionN1",
+        "positionN2",
+        "positionN3",
+        "averageTimeCircuit",
+        "positionCircuitN1",
+        "positionCircuitN2",
+        "positionCircuitN3",
     ]
 
     # Add the one-hot encoded columns for drivers and races
-    driver_cols = [col for col in df.columns if col.startswith('driver_name_')]
-    race_cols = [col for col in df.columns if col.startswith('race_name_')]
+    driver_cols = [col for col in df.columns if col.startswith("driver_name_")]
+    race_cols = [col for col in df.columns if col.startswith("race_name_")]
 
     features += driver_cols + race_cols
 
     X = df[features]
-    y = df['won_race']
+    y = df["won_race"]
 
     return X, y
+
 
 # Train the model
 def train_model(X, y):
@@ -49,7 +53,7 @@ def train_model(X, y):
     # Create a pipeline with standardization and logistic regression
     model = make_pipeline(
         StandardScaler(),
-        LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42)
+        LogisticRegression(class_weight="balanced", max_iter=1000, random_state=42),
     )
 
     # Train the model
@@ -62,23 +66,25 @@ def train_model(X, y):
 
     return model
 
+
 # Function to predict race outcome for a specific driver and race
 def predict_race_winner(model, driver_name, race_name, df):
     # Create a row with the same structure as training data
     # We'll use median values for numerical features as defaults
     # In a real application, you'd want to use actual recent data for the driver
-    pilotes_2025 = ['Lando Norris',
-        'Charles Leclerc',
-        'Lewis Hamilton',
-        'George Russell',
-        'Max Verstappen',
-        'Carlos Sainz',
-        'Esteban Ocon',
-        'Fernando Alonso',
-        'Lance Stroll',
-        'Pierre Gasly',
-        'Yuki Tsunoda',
-        'Nico Hülkenberg'
+    pilotes_2025 = [
+        "Lando Norris",
+        "Charles Leclerc",
+        "Lewis Hamilton",
+        "George Russell",
+        "Max Verstappen",
+        "Carlos Sainz",
+        "Esteban Ocon",
+        "Fernando Alonso",
+        "Lance Stroll",
+        "Pierre Gasly",
+        "Yuki Tsunoda",
+        "Nico Hülkenberg",
     ]
     if not driver_name in pilotes_2025:
         raise ValueError("Le pilote doit participer à la saison 2025.")
@@ -102,8 +108,14 @@ def predict_race_winner(model, driver_name, race_name, df):
 
     # Set numerical features to median values from training data
     numerical_features = [
-        'grid', 'positionN1', 'positionN2', 'positionN3',
-        'averageTimeCircuit', 'positionCircuitN1', 'positionCircuitN2', 'positionCircuitN3'
+        "grid",
+        "positionN1",
+        "positionN2",
+        "positionN3",
+        "averageTimeCircuit",
+        "positionCircuitN1",
+        "positionCircuitN2",
+        "positionCircuitN3",
     ]
 
     for feat in numerical_features:
@@ -122,6 +134,7 @@ def predict_race_winner(model, driver_name, race_name, df):
 
     return bool(prediction[0]), probability
 
+
 # Main workflow
 if __name__ == "__main__":
     # Preprocess the data
@@ -133,18 +146,19 @@ if __name__ == "__main__":
     # Example prediction
     race = "Suzuka Circuit"
 
-    pilotes_2025 = ['Lando Norris',
-        'Charles Leclerc',
-        'Lewis Hamilton',
-        'George Russell',
-        'Max Verstappen',
-        'Carlos Sainz',
-        'Esteban Ocon',
-        'Fernando Alonso',
-        'Lance Stroll',
-        'Pierre Gasly',
-        'Yuki Tsunoda',
-        'Nico Hülkenberg'
+    pilotes_2025 = [
+        "Lando Norris",
+        "Charles Leclerc",
+        "Lewis Hamilton",
+        "George Russell",
+        "Max Verstappen",
+        "Carlos Sainz",
+        "Esteban Ocon",
+        "Fernando Alonso",
+        "Lance Stroll",
+        "Pierre Gasly",
+        "Yuki Tsunoda",
+        "Nico Hülkenberg",
     ]
 
     print(f"Course:{race} \n")

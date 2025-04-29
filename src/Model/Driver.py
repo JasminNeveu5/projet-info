@@ -1,7 +1,5 @@
 class Driver:
-    def __init__(
-        self, forename: str, surname: str, nationality: str, **kwargs
-    ):
+    def __init__(self, forename: str, surname: str, nationality: str, **kwargs):
         if not isinstance(forename, str):
             raise TypeError("forename doit être de type str")
         if not isinstance(surname, str):

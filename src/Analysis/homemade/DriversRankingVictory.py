@@ -32,7 +32,7 @@ def get_winners(results: list):
 def get_ranking_victory(nb_victory: int):
     if not isinstance(nb_victory, int):
         raise TypeError("nb_victory doit être de type int")
-    if nb_victory <0:
+    if nb_victory < 0:
         raise ValueError("nb_victory doit être positif")
 
     drivers_path = f"{DATA_DIR}/drivers.csv"
@@ -55,7 +55,7 @@ def get_ranking_victory(nb_victory: int):
                 forename=ligne["forename"],
                 surname=ligne["surname"],
                 nationality=ligne["nationality"],
-                nombre_victoire=ligne["nb_victoires"]
+                nombre_victoire=ligne["nb_victoires"],
             )
         )
     return l

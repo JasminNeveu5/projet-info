@@ -24,7 +24,7 @@ def get_ranking_victory(nb_victory: int) -> list[Driver]:
     """
     if not isinstance(nb_victory, int):
         raise TypeError("nb_victory doit être de type int")
-    if nb_victory <0:
+    if nb_victory < 0:
         raise ValueError("nb_victory doit être positif")
 
     results = pd.read_csv(f"{DATA_DIR}/results.csv")

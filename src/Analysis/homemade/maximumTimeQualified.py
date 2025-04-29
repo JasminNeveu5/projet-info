@@ -14,15 +14,19 @@ interesting_datas = []
 for row in qualif:
     race_id = row["raceId"]
     # Find the corresponding race data (merged with circuits)
-    race_data = next((race for race in races_plus_circuits if race["raceId"] == race_id), None)
+    race_data = next(
+        (race for race in races_plus_circuits if race["raceId"] == race_id), None
+    )
     if race_data:
-        interesting_datas.append({
-            "circuitId": race_data["circuitId"],
-            "circuitRef": race_data["circuitRef"],
-            "q1": row["q1"].strip('"').strip() if row["q1"] != "\\N" else None,
-            "q2": row["q2"].strip('"').strip() if row["q2"] != "\\N" else None,
-            "q3": row["q3"].strip('"').strip() if row["q3"] != "\\N" else None
-        })
+        interesting_datas.append(
+            {
+                "circuitId": race_data["circuitId"],
+                "circuitRef": race_data["circuitRef"],
+                "q1": row["q1"].strip('"').strip() if row["q1"] != "\\N" else None,
+                "q2": row["q2"].strip('"').strip() if row["q2"] != "\\N" else None,
+                "q3": row["q3"].strip('"').strip() if row["q3"] != "\\N" else None,
+            }
+        )
 
 # Remplacer '\N' par None et convertir en secondes
 for data in interesting_datas:
@@ -32,7 +36,7 @@ for data in interesting_datas:
 
 # Préparer les colonnes pour les temps
 q1_column = sorted([data["q1"] for data in interesting_datas if data["q1"] is not None])
-q1_column.pop() # REMOVED the weird value created by merge
+q1_column.pop()  # REMOVED the weird value created by merge
 q2_column = [data["q2"] for data in interesting_datas if data["q2"] is not None]
 q3_column = [data["q3"] for data in interesting_datas if data["q3"] is not None]
 
@@ -66,4 +70,6 @@ for circuit_id, times in circuit_times.items():
     max_q2_circuit = max(times["q2"]) if times["q2"] else None
     max_q3_circuit = max(times["q3"]) if times["q3"] else None
     # Affichage des résultats par circuit_id
-    print(f"Circuit {circuit_id}: Max Q1: {max_q1_circuit}, Max Q2: {max_q2_circuit}, Max Q3: {max_q3_circuit}")
+    print(
+        f"Circuit {circuit_id}: Max Q1: {max_q1_circuit}, Max Q2: {max_q2_circuit}, Max Q3: {max_q3_circuit}"
+    )

@@ -12,6 +12,7 @@ lap_times = pd.read_csv(f"{DATA_DIR}/lap_times.csv")
 weather = pd.read_csv(f"{DATA_DIR}/weather.csv")
 circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
 
+
 class Pretraitement:
     # renvoie le jeu de données final
     @staticmethod
@@ -25,7 +26,7 @@ class Pretraitement:
         df = df.merge(circuits, on="circuitId")
         df["race_name"] = df["name_y"]
 
-                # Keeping values only coherent with the 2025 season (https://fr.wikipedia.org/wiki/Championnat_du_monde_de_Formule_1_2025#Grands_Prix_de_la_saison_2025)
+        # Keeping values only coherent with the 2025 season (https://fr.wikipedia.org/wiki/Championnat_du_monde_de_Formule_1_2025#Grands_Prix_de_la_saison_2025)
 
         # List of circuits for the 2025 season
         circuits_2025 = [
@@ -34,7 +35,7 @@ class Pretraitement:
             "Suzuka Circuit",
             "Bahrain International Circuit",
             "Jeddah Corniche Circuit",
-            "Miami International Autodrome", # never trained
+            "Miami International Autodrome",  # never trained
             "Autodromo Enzo e Dino Ferrari",
             "Circuit de Monaco",
             "Circuit de Barcelona-Catalunya",
@@ -42,7 +43,7 @@ class Pretraitement:
             "Red Bull Ring",
             "Silverstone Circuit",
             "Circuit de Spa-Francorchamps",
-            "Circuit Magyar Nagydij", # not in circuits.csv
+            "Circuit Magyar Nagydij",  # not in circuits.csv
             "Circuit Park Zandvoort",
             "Autodromo Nazionale di Monza",
             "Baku City Circuit",
@@ -50,32 +51,34 @@ class Pretraitement:
             "Circuit of The Americas",
             "Autódromo Hermanos Rodríguez",
             "Autódromo José Carlos Pace",
-            "Circuit Silver Las Vegas", # not in circuits.csv
-            "Lusail international Circuit", # not in circuits.csv
-            "Yas Marina Circuit"
+            "Circuit Silver Las Vegas",  # not in circuits.csv
+            "Lusail international Circuit",  # not in circuits.csv
+            "Yas Marina Circuit",
         ]
 
         # Filter the DataFrame to keep only rows with circuits in the 2025 season
         df = df[df["race_name"].isin(circuits_2025)]
 
-        # Filter les drivers
+        # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
 
-        pilotes_2025 = ['Lando Norris',
-'Oscar Piastri',
- 'Charles Leclerc',
- 'Lewis Hamilton',
- 'George Russell',
- 'Max Verstappen',
- 'Liam Lawson',
- 'Alexander Albon',
- 'Carlos Sainz',
- 'Esteban Ocon',
- 'Oliver Bearman',
- 'Fernando Alonso',
- 'Lance Stroll',
- 'Pierre Gasly',
- 'Yuki Tsunoda',
- 'Nico Hülkenberg']
+        pilotes_2025 = [
+            "Lando Norris",
+            "Oscar Piastri",
+            "Charles Leclerc",
+            "Lewis Hamilton",
+            "George Russell",
+            "Max Verstappen",
+            "Liam Lawson",
+            "Alexander Albon",
+            "Carlos Sainz",
+            "Esteban Ocon",
+            "Oliver Bearman",
+            "Fernando Alonso",
+            "Lance Stroll",
+            "Pierre Gasly",
+            "Yuki Tsunoda",
+            "Nico Hülkenberg",
+        ]
 
         df = df[df["driver_name"].isin(pilotes_2025)]
 
@@ -100,8 +103,12 @@ class Pretraitement:
                 past_data = group[group["year"] < row["year"]]
                 if not past_data.empty:
                     # Calcul de la vitesse moyenne cumulative
-                    past_data["milliseconds"] = past_data["milliseconds"].replace(r"\N", None)
-                    past_data["milliseconds"] = pd.to_numeric(past_data["milliseconds"], errors="coerce")
+                    past_data["milliseconds"] = past_data["milliseconds"].replace(
+                        r"\N", None
+                    )
+                    past_data["milliseconds"] = pd.to_numeric(
+                        past_data["milliseconds"], errors="coerce"
+                    )
                     past_data.dropna(subset=["milliseconds"], inplace=True)
                     avg_speed = past_data["milliseconds"].mean()
                 else:
@@ -111,13 +118,34 @@ class Pretraitement:
             # Ajouter les vitesses cumulées au DataFrame
             df.loc[group.index, "averageTimeCircuit"] = cumulative_time
 
-        df = df[["driverId","driver_name","race_name","raceId","date","year","positionOrder", "grid","positionN1","positionN2","positionN3","averageTimeCircuit"]]
-        df.sort_values("date", inplace=True,ascending=False)
+        df = df[
+            [
+                "driverId",
+                "driver_name",
+                "race_name",
+                "raceId",
+                "date",
+                "year",
+                "positionOrder",
+                "grid",
+                "positionN1",
+                "positionN2",
+                "positionN3",
+                "averageTimeCircuit",
+            ]
+        ]
+        df.sort_values("date", inplace=True, ascending=False)
 
         # Calcul de la position d'arrivée sur l'avant dernière course effectuée sur le circuit
-        df["positionCircuitN1"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-1)
-        df["positionCircuitN2"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-2)
-        df["positionCircuitN3"] = df.groupby(["driverId","race_name"])["positionOrder"].shift(-3)
+        df["positionCircuitN1"] = df.groupby(["driverId", "race_name"])[
+            "positionOrder"
+        ].shift(-1)
+        df["positionCircuitN2"] = df.groupby(["driverId", "race_name"])[
+            "positionOrder"
+        ].shift(-2)
+        df["positionCircuitN3"] = df.groupby(["driverId", "race_name"])[
+            "positionOrder"
+        ].shift(-3)
 
         # Calcul du numéro de qualification sur les dernières courses effectuées sur le circuit
         df["qualifCircuitN1"] = df.groupby(["driverId", "race_name"])["grid"].shift(-1)
@@ -135,20 +163,26 @@ class Pretraitement:
             else:
                 return "q1"
 
-        df["qualifCircuitN1"] = df["qualifCircuitN1"].apply(lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1")
-        df["qualifCircuitN2"] = df["qualifCircuitN2"].apply(lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1")
-        df["qualifCircuitN3"] = df["qualifCircuitN3"].apply(lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1")
-
-
-        # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
+        df["qualifCircuitN1"] = df["qualifCircuitN1"].apply(
+            lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
+        )
+        df["qualifCircuitN2"] = df["qualifCircuitN2"].apply(
+            lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
+        )
+        df["qualifCircuitN3"] = df["qualifCircuitN3"].apply(
+            lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
+        )
 
         print(df["driver_name"].unique())
         return df
 
+
 # Adding a progress bar for the preparation process
 
 with warnings.catch_warnings():
-    warnings.simplefilter("ignore")  # Suppress warnings : boring stuff from pandas (clueless)
+    warnings.simplefilter(
+        "ignore"
+    )  # Suppress warnings : boring stuff from pandas (clueless)
     data = Pretraitement.prepare()
     # data.dropna(inplace=True)
     data.to_csv(f"{DATA_DIR}/df.csv", index=False)

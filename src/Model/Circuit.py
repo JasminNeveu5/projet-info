@@ -9,7 +9,7 @@ class Circuit:
         self.name = name
         self.location = location
         self.country = country
-        self.additional_info = kwargs # Latitude and longitude for example
+        self.additional_info = kwargs  # Latitude and longitude for example
 
     def __str__(self):
         additional_info_str = (
