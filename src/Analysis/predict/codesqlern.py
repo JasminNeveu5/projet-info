@@ -86,7 +86,7 @@ def predict_race_winner(model, driver_name, race_name, df):
         "Yuki Tsunoda",
         "Nico Hülkenberg",
     ]
-    if not driver_name in pilotes_2025:
+    if driver_name not in pilotes_2025:
         raise ValueError("Le pilote doit participer à la saison 2025.")
 
     # Create a dictionary with all features set to 0 initially

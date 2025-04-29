@@ -26,7 +26,8 @@ class Pretraitement:
         df = df.merge(circuits, on="circuitId")
         df["race_name"] = df["name_y"]
 
-        # Keeping values only coherent with the 2025 season (https://fr.wikipedia.org/wiki/Championnat_du_monde_de_Formule_1_2025#Grands_Prix_de_la_saison_2025)
+        # Keeping values only coherent with the 2025 season
+        # (https://fr.wikipedia.org/wiki/Championnat_du_monde_de_Formule_1_2025#Grands_Prix_de_la_saison_2025)
 
         # List of circuits for the 2025 season
         circuits_2025 = [
@@ -59,7 +60,8 @@ class Pretraitement:
         # Filter the DataFrame to keep only rows with circuits in the 2025 season
         df = df[df["race_name"].isin(circuits_2025)]
 
-        # On garde uniquement les pilotes qui parcitipent à la saison 2025 et qui ont déjà conduit sur au moins une des saison précédentes.
+        # On garde uniquement les pilotes qui parcitipent à la saison 2025
+        # et qui ont déjà conduit sur au moins une des saison précédentes.
 
         pilotes_2025 = [
             "Lando Norris",
@@ -136,7 +138,8 @@ class Pretraitement:
         ]
         df.sort_values("date", inplace=True, ascending=False)
 
-        # Calcul de la position d'arrivée sur l'avant dernière course effectuée sur le circuit
+        # Calcul de la position d'arrivée sur l'avant
+        # dernière course effectuée sur le circuit
         df["positionCircuitN1"] = df.groupby(["driverId", "race_name"])[
             "positionOrder"
         ].shift(-1)
@@ -147,7 +150,8 @@ class Pretraitement:
             "positionOrder"
         ].shift(-3)
 
-        # Calcul du numéro de qualification sur les dernières courses effectuées sur le circuit
+        # Calcul du numéro de qualification sur les
+        # dernières courses effectuées sur le circuit
         df["qualifCircuitN1"] = df.groupby(["driverId", "race_name"])["grid"].shift(-1)
         df["qualifCircuitN2"] = df.groupby(["driverId", "race_name"])["grid"].shift(-2)
         df["qualifCircuitN3"] = df.groupby(["driverId", "race_name"])["grid"].shift(-3)

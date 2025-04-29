@@ -47,9 +47,9 @@ def get_ranking_victory(nb_victory: int):
             winners_victoires_name.append(dico)
 
     full = merge(winners_victoires_name, drivers, "driverId")
-    l = []
+    liste_retour = []
     for ligne in full:
-        l.append(
+        liste_retour.append(
             Driver(
                 id=int(ligne["driverId"]),
                 forename=ligne["forename"],
@@ -58,4 +58,4 @@ def get_ranking_victory(nb_victory: int):
                 nombre_victoire=ligne["nb_victoires"],
             )
         )
-    return l
+    return liste_retour
