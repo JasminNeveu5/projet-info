@@ -18,7 +18,7 @@ class Pretraitement:
     # renvoie le jeu de données final
     def constructorRanking(race_name, constructorRef):
         """
-        Renvoie si le contructeur a gagné sur le circuit 
+        Renvoie si le contructeur a gagné sur le circuit
         `race_name` en n-1, n-2 ou n-3.
 
         :return: Un tuple contenant trois valeurs booléennes :
@@ -31,15 +31,9 @@ class Pretraitement:
 
         table_travail["constructorRef"] = constructors["constructorRef"]
         table_travail["constructorId"] = constructors["constructorId"]
-        table_travail = table_travail.merge(
-            constructor_standings, on="constructorId"
-        )
-        table_travail = table_travail.merge(
-            races, on="raceId"
-        )
-        table_travail = table_travail.merge(
-            circuits, on="circuitId"
-        )
+        table_travail = table_travail.merge(constructor_standings, on="constructorId")
+        table_travail = table_travail.merge(races, on="raceId")
+        table_travail = table_travail.merge(circuits, on="circuitId")
         table_travail["race_name"] = table_travail["name_y"]
 
         # filtrer pour ne récuperer que les constucteurs de l'année sur le circuit
@@ -47,16 +41,33 @@ class Pretraitement:
         table_travail = table_travail[table_travail["constructorRef"] == constructorRef]
         table_travail = table_travail[table_travail["race_name"] == race_name]
         table_travail = table_travail[["constructorRef", "race_name", "wins", "year"]]
-        
+
         # récupere les 3 plus récentes années
         recent_years = table_travail["year"].dropna().unique()
-        recent_years = sorted(recent_years, reverse=True)[:3]  # Get the three most recent years
+        recent_years = sorted(recent_years, reverse=True)[
+            :3
+        ]  # Get the three most recent years
 
-        n1 = table_travail[table_travail["year"] == recent_years[0]]["wins"].iloc[0] if len(recent_years) > 0 and not table_travail[table_travail["year"] == recent_years[0]].empty else 0
-        n2 = table_travail[table_travail["year"] == recent_years[1]]["wins"].iloc[0] if len(recent_years) > 1 and not table_travail[table_travail["year"] == recent_years[1]].empty else 0
-        n3 = table_travail[table_travail["year"] == recent_years[2]]["wins"].iloc[0] if len(recent_years) > 2 and not table_travail[table_travail["year"] == recent_years[2]].empty else 0
+        n1 = (
+            table_travail[table_travail["year"] == recent_years[0]]["wins"].iloc[0]
+            if len(recent_years) > 0
+            and not table_travail[table_travail["year"] == recent_years[0]].empty
+            else 0
+        )
+        n2 = (
+            table_travail[table_travail["year"] == recent_years[1]]["wins"].iloc[0]
+            if len(recent_years) > 1
+            and not table_travail[table_travail["year"] == recent_years[1]].empty
+            else 0
+        )
+        n3 = (
+            table_travail[table_travail["year"] == recent_years[2]]["wins"].iloc[0]
+            if len(recent_years) > 2
+            and not table_travail[table_travail["year"] == recent_years[2]].empty
+            else 0
+        )
 
-        return (int(n1),int(n2),int(n3))
+        return (int(n1), int(n2), int(n3))
 
     @staticmethod
     def prepare():
@@ -227,35 +238,67 @@ class Pretraitement:
         # Add constructorN1, constuctorN2, constructorN3 columns using constructorRanking method
         tqdm.pandas(desc="Processing constructor rankings (1/3)")
         df["constructorN1"] = df.progress_apply(
-            lambda row: Pretraitement.constructorRanking(row["race_name"], row["constructorRef"])[0]
-            if pd.notna(row["race_name"]) and pd.notna(row["constructorRef"])
-            else 0,
+            lambda row: (
+                Pretraitement.constructorRanking(
+                    row["race_name"], row["constructorRef"]
+                )[0]
+                if pd.notna(row["race_name"]) and pd.notna(row["constructorRef"])
+                else 0
+            ),
             axis=1,
         )
         tqdm.pandas(desc="Processing constructor rankings (2/3)")
         df["constructorN2"] = df.progress_apply(
-            lambda row: Pretraitement.constructorRanking(row["race_name"], row["constructorRef"])[1]
-            if pd.notna(row["race_name"]) and pd.notna(row["constructorRef"])
-            else 0,
+            lambda row: (
+                Pretraitement.constructorRanking(
+                    row["race_name"], row["constructorRef"]
+                )[1]
+                if pd.notna(row["race_name"]) and pd.notna(row["constructorRef"])
+                else 0
+            ),
             axis=1,
         )
         tqdm.pandas(desc="Processing constructor rankings (3/3)")
         df["constructorN3"] = df.progress_apply(
-            lambda row: Pretraitement.constructorRanking(row["race_name"], row["constructorRef"])[2]
-            if pd.notna(row["race_name"]) and pd.notna(row["constructorRef"])
-            else 0,
+            lambda row: (
+                Pretraitement.constructorRanking(
+                    row["race_name"], row["constructorRef"]
+                )[2]
+                if pd.notna(row["race_name"]) and pd.notna(row["constructorRef"])
+                else 0
+            ),
             axis=1,
         )
 
         return df
 
 
-# Adding a progress bar for the preparation process
-
 with warnings.catch_warnings():
     warnings.simplefilter(
         "ignore"
     )  # Suppress warnings : boring stuff from pandas (clueless)
     data = Pretraitement.prepare()
-    data.dropna(inplace=True) # DANGER: remove some drivers
+
+    # Fill NaN values with the mean for each driver and each circuit
+    numeric_columns = data.select_dtypes(include=["number"]).columns
+    for column in numeric_columns:
+        data[column] = data.groupby(["driver_name", "race_name"])[column].transform(
+            lambda x: x.fillna(x.mean())
+        )
+
+    # Fill remaining NaNs for numeric columns with the overall mean
+    data[numeric_columns] = data[numeric_columns].fillna(data[numeric_columns].mean())
+
+    # Fill remaining NaNs for object (categorical) columns with mode or a placeholder
+    object_columns = data.select_dtypes(include=["object"]).columns
+    for column in object_columns:
+        mode = data[column].mode()
+        if not mode.empty:
+            data[column] = data[column].fillna(mode[0])
+        else:
+            data[column] = data[column].fillna("unknown")
+
+    # Fill any remaining NaNs with 0 as a last resort
+    data = data.fillna(0)
+
     data.to_csv(f"{DATA_DIR}/df.csv", index=False)

@@ -6,8 +6,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.pipeline import make_pipeline
 from options.config import DATA_DIR
 
-# Load your dataset (replace with your actual data source)
-# Assuming you have a CSV file with the structure you described
+# Load the dataset
 data = pd.read_csv(f"{DATA_DIR}/df.csv")
 
 
@@ -17,7 +16,7 @@ def preprocess_data(df):
     df["won_race"] = df["positionOrder"] == 1
 
     # Convert categorical variables to numerical (if needed)
-    df = pd.get_dummies(df, columns=["driver_name", "race_name"], drop_first=True)
+    df = pd.get_dummies(df, columns=["driver_name", "race_name"], drop_first=False)
 
     # Select features - adjust based on your feature importance analysis
     features = [
@@ -34,7 +33,7 @@ def preprocess_data(df):
         "qualifCircuitN3",
         "constructorN1",
         "constructorN2",
-        "constructorN3"
+        "constructorN3",
     ]
 
     # Add the one-hot encoded columns for drivers and races
@@ -80,12 +79,15 @@ def predict_race_winner(model, driver_name, race_name, df):
     # In a real application, you'd want to use actual recent data for the driver
     pilotes_2025 = [
         "Lando Norris",
+        "Oscar Piastri",
         "Charles Leclerc",
         "Lewis Hamilton",
         "George Russell",
         "Max Verstappen",
+        "Liam Lawson",
         "Carlos Sainz",
         "Esteban Ocon",
+        "Oliver Bearman",
         "Fernando Alonso",
         "Lance Stroll",
         "Pierre Gasly",
@@ -149,28 +151,46 @@ if __name__ == "__main__":
     # Train the model
     model = train_model(X, y)
 
-    # Example prediction
-    race = "Jeddah Corniche Circuit"
+    # Display the features used in the model
+    trained_circuits = sorted(
+        set(
+            col.replace("race_name_", "")
+            for col in model.feature_names_in_
+            if col.startswith("race_name_")
+        )
+    )
+    print("Circuits entraînés par le modèle :")
+    for circuit in trained_circuits:
+        print("-", circuit)
 
+    # Example prediction
+    race = "Albert Park Grand Prix Circuit"
+  
     pilotes_2025 = [
         "Lando Norris",
+        "Oscar Piastri",
         "Charles Leclerc",
         "Lewis Hamilton",
         "George Russell",
         "Max Verstappen",
+        "Liam Lawson",
         "Carlos Sainz",
         "Esteban Ocon",
+        "Oliver Bearman",
         "Fernando Alonso",
         "Lance Stroll",
         "Pierre Gasly",
         "Yuki Tsunoda",
         "Nico Hülkenberg",
     ]
-
-    print(f"Course:{race} \n")
-    for driver in pilotes_2025[::-1]:
-        print("------ \n")
-        print(driver)
+    print(f"Course: {race} \n")
+    results = []
+    for driver in pilotes_2025:
         will_win, probability = predict_race_winner(model, driver, race, data)
-        print(f"{will_win}:{probability}")
-        # print(model.coef_)
+        results.append((driver, probability, will_win))
+    # Sort by probability descending
+    results.sort(key=lambda x: x[1], reverse=True)
+    for driver, probability, will_win in results:
+        print("------")
+        print(driver)
+        print(f"{will_win}: {probability}")
