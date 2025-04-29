@@ -29,6 +29,12 @@ def preprocess_data(df):
         "positionCircuitN1",
         "positionCircuitN2",
         "positionCircuitN3",
+        "qualifCircuitN1",
+        "qualifCircuitN2",
+        "qualifCircuitN3",
+        "constructorN1",
+        "constructorN2",
+        "constructorN3"
     ]
 
     # Add the one-hot encoded columns for drivers and races
@@ -144,7 +150,7 @@ if __name__ == "__main__":
     model = train_model(X, y)
 
     # Example prediction
-    race = "Suzuka Circuit"
+    race = "Jeddah Corniche Circuit"
 
     pilotes_2025 = [
         "Lando Norris",
@@ -167,3 +173,4 @@ if __name__ == "__main__":
         print(driver)
         will_win, probability = predict_race_winner(model, driver, race, data)
         print(f"{will_win}:{probability}")
+        # print(model.coef_)
