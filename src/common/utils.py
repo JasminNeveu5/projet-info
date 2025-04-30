@@ -54,7 +54,6 @@ def merge(table1, table2, key):
     return merged_table
 
 
-
 def human_readable_formatter(milliseconds):
     """
     Converts milliseconds into a human-readable format (e.g., minutes:seconds.milliseconds).

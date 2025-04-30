@@ -34,71 +34,68 @@ def get_status_code_occurrences(status, manufacturer=None):
     # === Construction de la table ===
 
     results_x_constructor = pd.merge(results, f1_constructor, on="constructorId")[
-    ["constructorId", "statusId", "nationality"]
+        ["constructorId", "statusId", "nationality"]
     ]
 
     # On compte les occurrences de chaque message d'erreur pour chaque constructeur
     status_counts = (
-    results_x_constructor.groupby(["constructorId", "statusId"])
-    .size()
-    .reset_index(name="count")
+        results_x_constructor.groupby(["constructorId", "statusId"])
+        .size()
+        .reset_index(name="count")
     )
 
     # On enlève les statusId qui ne sont pas liés à un défaut de voiture (par exemple "course réussi", ou "pilote malade")
     # Ces statusId ont été récupéré à la main en lisant les problèmes qu'ils indiquaient.
     status_counts = status_counts[
-    ~status_counts["statusId"].isin(
-        [1, 2, 3, 4, 31, 50, 128, 53, 58, 73, 81, 82, 88, 97, 100] + list(range(11, 20))
-    )
+        ~status_counts["statusId"].isin(
+            [1, 2, 3, 4, 31, 50, 128, 53, 58, 73, 81, 82, 88, 97, 100]
+            + list(range(11, 20))
+        )
     ]
 
     # Calculer le total des occurrences de résultats par constructeur (le nombre de courses auxquels ils ont participé)
     total_counts = (
-    results_x_constructor.groupby("constructorId")
-    .size()
-    .reset_index(name="total_count")
+        results_x_constructor.groupby("constructorId")
+        .size()
+        .reset_index(name="total_count")
     )
 
     # Ajouter la colonne de proportion de problèmes dans le tableau
     status_counts = pd.merge(status_counts, total_counts, on="constructorId")
     status_counts["proportion"] = status_counts["count"] / status_counts["total_count"]
 
-
     # === Problèmes les plus fréquents par constructeur ===
-
 
     # Trie par 'constructorId' et 'count' (desc), et sélection des 10 principaux status ID par constructeur
     status_counts_per_constructor = status_counts.sort_values(
-    by=["constructorId", "count"], ascending=[True, False]
+        by=["constructorId", "count"], ascending=[True, False]
     )
     # Fusion avec la table `status_code` et inclut les noms des constructeurs
     status_counts_per_constructor = pd.merge(
-    status_counts_per_constructor, status_code, on="statusId"
+        status_counts_per_constructor, status_code, on="statusId"
     )
     status_counts_per_constructor = pd.merge(
-    status_counts_per_constructor,
-    f1_constructor[["constructorId", "name"]],
-    on="constructorId",
+        status_counts_per_constructor,
+        f1_constructor[["constructorId", "name"]],
+        on="constructorId",
     )
-
 
     # === Constructeurs avec le plus de problèmes ===
 
     # EN NB D'OCCURRENCES
     status_counts_constructor = (
-    status_counts_per_constructor.groupby("name")[["count", "constructorId"]]
-    .sum()
-    .reset_index()
+        status_counts_per_constructor.groupby("name")[["count", "constructorId"]]
+        .sum()
+        .reset_index()
     )
-
 
     # EN PROPORTION
 
     failures_per_constructor = status_counts_constructor.merge(
-    total_counts, on="constructorId"
+        total_counts, on="constructorId"
     )
     failures_per_constructor["failure_proportion"] = (
-    failures_per_constructor["count"] / failures_per_constructor["total_count"]
+        failures_per_constructor["count"] / failures_per_constructor["total_count"]
     )
 
     # Filter data based on the given statusCode
@@ -114,9 +111,10 @@ def get_status_code_occurrences(status, manufacturer=None):
 
     # Rename columns for consistency
 
-
     # Select necessary columns
-    filtered_data = filtered_data.merge(f1_constructor, on="constructorId")[["name_x","status","nationality","proportion","count"]]
+    filtered_data = filtered_data.merge(f1_constructor, on="constructorId")[
+        ["name_x", "status", "nationality", "proportion", "count"]
+    ]
     constructors = []
     constructors = [
         Constructor(
