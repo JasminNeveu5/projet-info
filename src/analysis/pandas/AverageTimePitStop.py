@@ -33,9 +33,7 @@ name = "Australian Grand Prix"
 # Graphique
 
 
-temps_moyen_pit_stops_readable = AverageTimePitStop(name).map(
-    convert_milliseconds_to_time
-)
+temps_moyen_pit_stops_readable = AverageTimePitStop(name).map(convert_milliseconds_to_time)
 plt.figure(figsize=(10, 6))
 AverageTimePitStop(name).plot(
     x="year", y="milliseconds", marker="o", ylim=(0, 240000), color="orange"

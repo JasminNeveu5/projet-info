@@ -13,20 +13,20 @@ class DefaultQuery:
     @staticmethod
     def nombre_victoires(nb_victoires):
         drivers = get_ranking_victory(nb_victoires)
-        drivers = [ConverterService.convert_to_driverAPI(driver) for driver in drivers]
+        drivers = [ConverterService.convert_to_driver_API(driver) for driver in drivers]
         return drivers
 
     @staticmethod
     def rankingYear(annee: int):
         drivers = get_ranking_year(annee)
-        drivers = [ConverterService.convert_to_driverAPI(driver) for driver in drivers]
+        drivers = [ConverterService.convert_to_driver_API(driver) for driver in drivers]
         return drivers
 
     @staticmethod
     def bestConstructor(annee: int):
         constructors = best_constructors(annee)
         constructors = [
-            ConverterService.convert_to_constructorAPI(constructor)
+            ConverterService.convert_to_constructor_API(constructor)
             for constructor in constructors
         ]
         return constructors
@@ -40,13 +40,13 @@ class DefaultQuery:
     @staticmethod
     def home_win(nationalite: str):
         drivers = home_win(nationalite)
-        drivers = [ConverterService.convert_to_driverAPI(driver) for driver in drivers]
+        drivers = [ConverterService.convert_to_driver_API(driver) for driver in drivers]
         return drivers
 
     @staticmethod
     def mostDamagedDriver(nombre_courses_minimum):
         drivers = most_damaged_driver(nombre_courses_minimum)
-        drivers = [ConverterService.convert_to_driverAPI(driver) for driver in drivers]
+        drivers = [ConverterService.convert_to_driver_API(driver) for driver in drivers]
         return drivers
 
     @staticmethod
@@ -59,7 +59,7 @@ class DefaultQuery:
     def get_status_code_occurences(status: str, manufacturer: str):
         constructors = get_status_code_occurrences(status, manufacturer)
         constructors = [
-            ConverterService.convert_to_constructorAPI(constructor)
+            ConverterService.convert_to_constructor_API(constructor)
             for constructor in constructors
         ]
         return constructors

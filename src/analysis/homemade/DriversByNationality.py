@@ -1,11 +1,11 @@
 import csv
-from options.config import DATA_DIR
-import src.model.driver as d
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+from options.config import DATA_DIR
+import src.model.internal.driver as d
 
 
-def DriversByNationality(wanted_nationality):
+def drivers_by_nationality(wanted_nationality):
     if not isinstance(wanted_nationality, str):
         raise TypeError("The wanted nationality should be a string.")
     else:
@@ -37,7 +37,7 @@ wanted_nationality = "Italian"
 
 # Graphique
 
-nationality_proportion = DriversByNationality(wanted_nationality)[0]
+nationality_proportion = drivers_by_nationality(wanted_nationality)[0]
 y = np.array([nationality_proportion, 1 - nationality_proportion])
 mylabels = [f"{wanted_nationality}", "Other nationalities"]
 myexplode = [0.2, 0]

@@ -5,7 +5,9 @@ from src.common.utils import time_to_seconds
 
 
 def get_ranking_year(
-    year: int, results_csv_path:str=f"{DATA_DIR}/results.csv", sprint_results_csv_path:str=f"{DATA_DIR}/sprint_results.csv"
+    year: int,
+    results_csv_path: str = f"{DATA_DIR}/results.csv",
+    sprint_results_csv_path: str = f"{DATA_DIR}/sprint_results.csv",
 ) -> list:
     # Load data
     df_gp = pd.read_csv(results_csv_path)
@@ -27,14 +29,10 @@ def get_ranking_year(
     df_gp["mt_point"] = 0
 
     for race_id, group in df_gp.groupby("raceId"):
-        classified = group[
-            (group["positionOrder"] <= 10) & (group["fastestLapTime_sec"].notnull())
-        ]
+        classified = group[(group["positionOrder"] <= 10) & (group["fastestLapTime_sec"].notnull())]
         if not classified.empty:
             min_time = classified["fastestLapTime_sec"].min()
-            fastest_driver = classified[
-                classified["fastestLapTime_sec"] == min_time
-            ].iloc[0]
+            fastest_driver = classified[classified["fastestLapTime_sec"] == min_time].iloc[0]
             idx = fastest_driver.name
             df_gp.at[idx, "mt_point"] = 1
 
@@ -60,9 +58,7 @@ def get_ranking_year(
     ranking = ranking.merge(
         sprint_points_sum.reset_index(name="sprint_points"), on="driverId", how="left"
     )
-    ranking = ranking.merge(
-        mt_points_sum.reset_index(name="mt_points"), on="driverId", how="left"
-    )
+    ranking = ranking.merge(mt_points_sum.reset_index(name="mt_points"), on="driverId", how="left")
 
     # Build Driver objects list
     driver_list = []
@@ -83,8 +79,6 @@ def get_ranking_year(
 
 if __name__ == "__main__":
     # Example usage:
-    ranking_2021 = get_ranking_year(
-        2021
-    )
+    ranking_2021 = get_ranking_year(2021)
     for driver in ranking_2021:
         print(driver)

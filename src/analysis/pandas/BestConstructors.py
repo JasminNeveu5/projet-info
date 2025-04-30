@@ -17,14 +17,20 @@ jointure = jointure[["name_x", "year", "wins", "nationality"]]
 
 
 def best_constructors(wanted_year):
+    """
+    Returns a list of Constructor objects representing the best constructors for a given year.
+
+    Args:
+        wanted_year (int): The year for which to retrieve the best constructors.
+
+    Returns:
+        list[Constructor]: A list of Constructor objects sorted by number of wins in descending order.
+    """
     # Group by constructor and sum wins, take the first nationality (they are always the same for a constructor)
     filtered = jointure[jointure["year"] == wanted_year]
     result = (
         filtered.groupby("name_x")
-        .agg({
-            "wins": "sum",
-            "nationality": "first"
-        })
+        .agg({"wins": "sum", "nationality": "first"})
         .sort_values("wins", ascending=False)
         .reset_index()
     )
@@ -42,3 +48,12 @@ def best_constructors(wanted_year):
         )
 
     return best_constructor_list
+
+
+if __name__ == "__main__":
+    year = 2021
+    best_constructors_list = best_constructors(year)
+    for constructor in best_constructors_list:
+        print(
+            f"{constructor.name} - {constructor.nationality} - {constructor.additional_info["wins"]} wins"
+        )

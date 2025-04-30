@@ -17,16 +17,10 @@ def MexicoCityAltitudeIssue(wanted_status):
     jointure = jointure[["location", "status"]][jointure["status"] == wanted_status]
 
     moyenne = (
-        jointure[jointure["status"] == wanted_status]
-        .groupby("location")
-        .value_counts()
-        .mean()
+        jointure[jointure["status"] == wanted_status].groupby("location").value_counts().mean()
     )
     nombre_mexico = (
-        jointure[
-            (jointure["status"] == wanted_status)
-            & (jointure["location"] == "Mexico City")
-        ]
+        jointure[(jointure["status"] == wanted_status) & (jointure["location"] == "Mexico City")]
         .groupby("location")
         .value_counts()[0]
     )

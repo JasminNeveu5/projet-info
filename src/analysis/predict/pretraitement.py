@@ -105,9 +105,7 @@ class Pretraitement:
                 past_data = group[group["year"] < row["year"]]
                 if not past_data.empty:
                     # Calcul de la vitesse moyenne cumulative
-                    past_data["milliseconds"] = past_data["milliseconds"].replace(
-                        r"\N", None
-                    )
+                    past_data["milliseconds"] = past_data["milliseconds"].replace(r"\N", None)
                     past_data["milliseconds"] = pd.to_numeric(
                         past_data["milliseconds"], errors="coerce"
                     )
@@ -140,15 +138,9 @@ class Pretraitement:
 
         # Calcul de la position d'arrivée sur l'avant
         # dernière course effectuée sur le circuit
-        df["positionCircuitN1"] = df.groupby(["driverId", "race_name"])[
-            "positionOrder"
-        ].shift(-1)
-        df["positionCircuitN2"] = df.groupby(["driverId", "race_name"])[
-            "positionOrder"
-        ].shift(-2)
-        df["positionCircuitN3"] = df.groupby(["driverId", "race_name"])[
-            "positionOrder"
-        ].shift(-3)
+        df["positionCircuitN1"] = df.groupby(["driverId", "race_name"])["positionOrder"].shift(-1)
+        df["positionCircuitN2"] = df.groupby(["driverId", "race_name"])["positionOrder"].shift(-2)
+        df["positionCircuitN3"] = df.groupby(["driverId", "race_name"])["positionOrder"].shift(-3)
 
         # Calcul du numéro de qualification sur les
         # dernières courses effectuées sur le circuit
@@ -184,9 +176,7 @@ class Pretraitement:
 # Adding a progress bar for the preparation process
 
 with warnings.catch_warnings():
-    warnings.simplefilter(
-        "ignore"
-    )  # Suppress warnings : boring stuff from pandas (clueless)
+    warnings.simplefilter("ignore")  # Suppress warnings : boring stuff from pandas (clueless)
     data = Pretraitement.prepare()
     # data.dropna(inplace=True)
     data.to_csv(f"{DATA_DIR}/df.csv", index=False)

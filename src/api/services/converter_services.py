@@ -10,7 +10,7 @@ from src.model.api.constructor import Constructor as ConstructorAPI
 
 class ConverterService:
     @staticmethod
-    def convert_to_driverAPI(custom_driver: Driver) -> DriverAPI:
+    def convert_to_driver_API(custom_driver: Driver) -> DriverAPI:
         driver_data = {
             "forename": custom_driver.forename,
             "surname": custom_driver.surname,  # Note: matches your Pydantic model's field name
@@ -40,7 +40,7 @@ class ConverterService:
         return CircuitAPI(**circuit_data)
 
     @staticmethod
-    def convert_to_constructorAPI(constructor: Constructor):
+    def convert_to_constructor_API(constructor: Constructor):
         constructor_data = {
             "name": constructor.name,
             "nationality": constructor.nationality,

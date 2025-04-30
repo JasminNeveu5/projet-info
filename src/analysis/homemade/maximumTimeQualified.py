@@ -14,9 +14,7 @@ interesting_datas = []
 for row in qualif:
     race_id = row["raceId"]
     # Find the corresponding race data (merged with circuits)
-    race_data = next(
-        (race for race in races_plus_circuits if race["raceId"] == race_id), None
-    )
+    race_data = next((race for race in races_plus_circuits if race["raceId"] == race_id), None)
     if race_data:
         interesting_datas.append(
             {
