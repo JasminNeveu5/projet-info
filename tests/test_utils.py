@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from src.Common.utils import read_csv
+from src.common.utils import read_csv
 
 
 @pytest.fixture
