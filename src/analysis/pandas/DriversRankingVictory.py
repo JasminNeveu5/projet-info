@@ -36,7 +36,9 @@ def get_ranking_victory(nb_victory: int) -> list[Driver]:
     winners_victoires_name = pd.merge(winners_victoires, drivers, on="driverId")[
         ["forename", "surname", "nationality", "Nombre de victoires"]
     ].sort_values(by="Nombre de victoires", ascending=False)
-    winners_victoires_name = winners_victoires_name[winners_victoires_name["Nombre de victoires"] >= nb_victory]
+    winners_victoires_name = winners_victoires_name[
+        winners_victoires_name["Nombre de victoires"] >= nb_victory
+    ]
 
     result = []
 

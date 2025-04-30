@@ -11,6 +11,7 @@ from src.analysis.pandas.FrequentProblemsInCar import get_status_code_occurrence
 from src.api.services.converter_services import ConverterService
 from src.model.internal.race import Race
 
+
 class DefaultQuery:
     @staticmethod
     def nombre_victoires(nb_victoires):
@@ -19,25 +20,28 @@ class DefaultQuery:
         return drivers
 
     @staticmethod
-    def rankingYear(annee:int):
+    def rankingYear(annee: int):
         drivers = get_ranking_year(annee)
         drivers = [ConverterService.convert_to_driverAPI(driver) for driver in drivers]
         return drivers
 
     @staticmethod
-    def bestConstructor(annee:int):
+    def bestConstructor(annee: int):
         constructors = BestConstructors(annee)
-        constructors = [ConverterService.convert_to_constructorAPI(constructor) for constructor in constructors]
+        constructors = [
+            ConverterService.convert_to_constructorAPI(constructor)
+            for constructor in constructors
+        ]
         return constructors
 
     @staticmethod
-    def bestTimeCircuit(name:str):
+    def bestTimeCircuit(name: str):
         circuit = get_bestTimeCircuit(name)
         circuit = ConverterService.convert_to_circuitAPI(circuit)
         return circuit
 
     @staticmethod
-    def home_win(nationalite:str):
+    def home_win(nationalite: str):
         drivers = home_win(nationalite)
         drivers = [ConverterService.convert_to_driverAPI(driver) for driver in drivers]
         return drivers
@@ -55,7 +59,10 @@ class DefaultQuery:
         return r
 
     @staticmethod
-    def get_status_code_occurences(status:str, manufacturer:str):
-        constructors = get_status_code_occurrences(status,manufacturer)
-        constructors = [ConverterService.convert_to_constructorAPI(constructor) for constructor in constructors]
+    def get_status_code_occurences(status: str, manufacturer: str):
+        constructors = get_status_code_occurrences(status, manufacturer)
+        constructors = [
+            ConverterService.convert_to_constructorAPI(constructor)
+            for constructor in constructors
+        ]
         return constructors

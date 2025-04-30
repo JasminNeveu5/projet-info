@@ -66,5 +66,14 @@ def home_win(nationalite):
                 moyenne_domicile=row["moyenne_locale"],
             )
         )
-    result.append(Driver(forename="j",surname="s",nationality="French",moyenne_exterieure=1,moyenne_generale=2,moyenne_domicile=3))
+    result.append(
+        Driver(
+            forename="j",
+            surname="s",
+            nationality="French",
+            moyenne_exterieure=1,
+            moyenne_generale=2,
+            moyenne_domicile=3,
+        )
+    )
     return result

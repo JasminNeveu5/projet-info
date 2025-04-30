@@ -12,6 +12,7 @@ lap_times = pd.read_csv(f"{DATA_DIR}/lap_times.csv")
 weather = pd.read_csv(f"{DATA_DIR}/weather.csv")
 circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
 
+
 class Pretraitement:
     # renvoie le jeu de données final
     @staticmethod

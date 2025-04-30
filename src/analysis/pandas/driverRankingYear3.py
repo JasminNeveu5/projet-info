@@ -80,6 +80,7 @@ def get_driver_ranking(
 
     return driver_list
 
+
 if __name__ == "__main__":
     # Example usage:
     ranking_2021 = get_driver_ranking(
