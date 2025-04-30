@@ -25,4 +25,4 @@ jobs:
           pip install -r requirements.txt
       - name: Run Pylint
         run: |
-          pylint $(git ls-files '*.py') --fail-under=7 --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612D
+          pylint . --fail-under=7 --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612D
