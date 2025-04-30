@@ -4,8 +4,8 @@ from src.model.internal.driver import Driver
 from src.common.utils import time_to_seconds
 
 
-def get_driver_ranking(
-    year: int, results_csv_path: str, sprint_results_csv_path: str
+def get_ranking_year(
+    year: int, results_csv_path:str=f"{DATA_DIR}/results.csv", sprint_results_csv_path:str=f"{DATA_DIR}/sprint_results.csv"
 ) -> list:
     # Load data
     df_gp = pd.read_csv(results_csv_path)
@@ -83,8 +83,8 @@ def get_driver_ranking(
 
 if __name__ == "__main__":
     # Example usage:
-    ranking_2021 = get_driver_ranking(
-        2021, f"{DATA_DIR}/results.csv", f"{DATA_DIR}/sprint_results.csv"
+    ranking_2021 = get_ranking_year(
+        2021
     )
     for driver in ranking_2021:
         print(driver)
