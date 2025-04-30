@@ -9,7 +9,6 @@ from src.analysis.pandas.MostDamagedDriver import most_damaged_driver
 from src.analysis.pandas.TightestRace import tightestrace
 from src.analysis.pandas.FrequentProblemsInCar import get_status_code_occurrences
 from src.api.services.converter_services import ConverterService
-from src.model.internal.race import Race
 
 
 class DefaultQuery:
