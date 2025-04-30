@@ -18,9 +18,7 @@ def get_bestTimeCircuit(name: str):
     circuits = pd.read_csv(f"{DATA_DIR}/circuits.csv")
     races = pd.read_csv(f"{DATA_DIR}/races.csv")
 
-    meilleur_temps_course = (
-        lap_times.groupby("raceId")["milliseconds"].min().reset_index()
-    )
+    meilleur_temps_course = lap_times.groupby("raceId")["milliseconds"].min().reset_index()
     m2 = (
         meilleur_temps_course.merge(races, on="raceId")
         .groupby("circuitId")["milliseconds"]

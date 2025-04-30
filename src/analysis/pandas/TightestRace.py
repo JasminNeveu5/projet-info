@@ -25,9 +25,9 @@ def tightestrace():
         on="raceId",
     )[["raceId", "milliseconds_x", "milliseconds_y"]]
     merged_result = merged_result[~merged_result.isin(["\\N"]).any(axis=1)]
-    merged_result["time_diff"] = merged_result["milliseconds_y"].astype(
-        int
-    ) - merged_result["milliseconds_x"].astype(int)
+    merged_result["time_diff"] = merged_result["milliseconds_y"].astype(int) - merged_result[
+        "milliseconds_x"
+    ].astype(int)
     merged_result_races = pd.merge(merged_result, races, on="raceId")[
         ["name", "year", "date", "time_diff"]
     ]

@@ -1,6 +1,6 @@
 from options.config import DATA_DIR
 from src.common.utils import merge, read_csv
-from src.model.Driver import Driver
+from src.model.internal.driver import Driver
 
 
 def count_driver_ids(list_of_dicos):
@@ -30,6 +30,19 @@ def get_winners(results: list):
 
 
 def get_ranking_victory(nb_victory: int):
+    """
+    Returns a list of Driver objects who have more than `nb_victory` victories.
+
+    Args:
+        nb_victory (int): The minimum number of victories required to be included in the ranking.
+
+    Raises:
+        TypeError: If `nb_victory` is not an integer.
+        ValueError: If `nb_victory` is negative.
+
+    Returns:
+        list[Driver]: A list of Driver objects with more than `nb_victory` victories.
+    """
     if not isinstance(nb_victory, int):
         raise TypeError("nb_victory doit être de type int")
     if nb_victory < 0:

@@ -20,9 +20,7 @@ def home_win(nationalite):
         .agg(moyenne_overall=("positionOrder", "mean"))
         .sort_values("moyenne_overall")
     )
-    position_moyenne_pilote = drivers.merge(
-        position_moyenne, on="driverId", how="inner"
-    )
+    position_moyenne_pilote = drivers.merge(position_moyenne, on="driverId", how="inner")
 
     # Calcule de la position moyenne des pilotes lors des courses dans leurs pays
     local_races = races.merge(drivers, left_on="country", right_on="nationality")
@@ -39,9 +37,9 @@ def home_win(nationalite):
         moyenne_etrangere=("positionOrder", "mean")
     )
 
-    compare = pd.merge(
-        local_races_moyenne, position_moyenne_pilote, on="driverId"
-    ).merge(foreign_races_moyenne, on="driverId", how="left")
+    compare = pd.merge(local_races_moyenne, position_moyenne_pilote, on="driverId").merge(
+        foreign_races_moyenne, on="driverId", how="left"
+    )
     compare = compare[
         [
             "driverId",
