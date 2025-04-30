@@ -16,20 +16,24 @@ jointure = jointure[["name_x", "year", "wins", "nationality"]]
 # Fonction
 
 
-def BestConstructors(wanted_year):
+def best_constructors(wanted_year):
+    # Group by constructor and sum wins, take the first nationality (they are always the same for a constructor)
+    filtered = jointure[jointure["year"] == wanted_year]
     result = (
-        jointure[jointure["year"] == wanted_year]
-        .groupby("name_x")
-        .apply(np.sum, axis=0)
+        filtered.groupby("name_x")
+        .agg({
+            "wins": "sum",
+            "nationality": "first"
+        })
         .sort_values("wins", ascending=False)
+        .reset_index()
     )
-    result["name"] = result.index
-    result = result[["name", "nationality", "wins"]]
+    result = result.rename(columns={"name_x": "name"})
 
-    BestConstructorList = []
+    best_constructor_list = []
 
-    for index, row in result.iterrows():
-        BestConstructorList.append(
+    for _, row in result.iterrows():
+        best_constructor_list.append(
             Constructor(
                 name=row["name"],
                 nationality=row["nationality"],
@@ -37,4 +41,4 @@ def BestConstructors(wanted_year):
             )
         )
 
-    return BestConstructorList
+    return best_constructor_list

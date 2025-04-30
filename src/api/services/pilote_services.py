@@ -1,8 +1,6 @@
-import pandas as pd
-from options.config import DATA_DIR
 from src.analysis.pandas.DriversRankingVictory import get_ranking_victory
 from src.analysis.pandas.driverRankingYear import get_ranking_year
-from src.analysis.pandas.BestConstructors import BestConstructors
+from src.analysis.pandas.BestConstructors import best_constructors
 from src.analysis.pandas.BestTimeCircuit import get_bestTimeCircuit
 from src.analysis.pandas.HomeWin import home_win
 from src.analysis.pandas.MostDamagedDriver import most_damaged_driver
@@ -26,7 +24,7 @@ class DefaultQuery:
 
     @staticmethod
     def bestConstructor(annee: int):
-        constructors = BestConstructors(annee)
+        constructors = best_constructors(annee)
         constructors = [
             ConverterService.convert_to_constructorAPI(constructor)
             for constructor in constructors
