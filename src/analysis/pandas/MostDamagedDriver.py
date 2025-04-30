@@ -39,7 +39,7 @@ def most_damaged_driver(nombre_courses_minimum):
     results_total = results_total[results_total["count"] >= nombre_courses_minimum]
     result = []
 
-    for row in results_total.iterrows():
+    for index, row in results_total.iterrows():
         result.append(
             Driver(
                 forename=row["forename"],
