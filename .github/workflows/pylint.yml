@@ -26,4 +26,5 @@ jobs:
       - name: Run Pylint
         run: |
           pwd &
+          export PYTHONPATH="/home/runner/work/projet-info/projet-info" &
           pylint . --fail-under=7 --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612D
