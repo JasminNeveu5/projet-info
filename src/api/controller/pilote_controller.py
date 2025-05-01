@@ -1,6 +1,6 @@
 from fastapi import HTTPException, APIRouter
-from src.api.services.pilote_services import DefaultQuery
 import pandas as pd
+from src.api.services.pilote_services import DefaultQuery
 from options.config import DATA_DIR
 
 router = APIRouter()
