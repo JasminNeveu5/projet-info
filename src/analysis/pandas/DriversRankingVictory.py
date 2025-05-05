@@ -30,7 +30,9 @@ def get_ranking_victory(nb_victory: int) -> list[Driver]:
     results = pd.read_csv(f"{DATA_DIR}/results.csv")
     drivers = pd.read_csv(f"{DATA_DIR}/drivers.csv")
     winners = results[results["position"] == "1"]
-    winners_victoires = winners.groupby("driverId").size().reset_index(name="Nombre de victoires")
+    winners_victoires = (
+        winners.groupby("driverId").size().reset_index(name="Nombre de victoires")
+    )
     winners_victoires_name = pd.merge(winners_victoires, drivers, on="driverId")[
         ["forename", "surname", "nationality", "Nombre de victoires"]
     ].sort_values(by="Nombre de victoires", ascending=False)

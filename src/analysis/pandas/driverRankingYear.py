@@ -29,10 +29,14 @@ def get_ranking_year(
     df_gp["mt_point"] = 0
 
     for race_id, group in df_gp.groupby("raceId"):
-        classified = group[(group["positionOrder"] <= 10) & (group["fastestLapTime_sec"].notnull())]
+        classified = group[
+            (group["positionOrder"] <= 10) & (group["fastestLapTime_sec"].notnull())
+        ]
         if not classified.empty:
             min_time = classified["fastestLapTime_sec"].min()
-            fastest_driver = classified[classified["fastestLapTime_sec"] == min_time].iloc[0]
+            fastest_driver = classified[
+                classified["fastestLapTime_sec"] == min_time
+            ].iloc[0]
             idx = fastest_driver.name
             df_gp.at[idx, "mt_point"] = 1
 
@@ -58,7 +62,9 @@ def get_ranking_year(
     ranking = ranking.merge(
         sprint_points_sum.reset_index(name="sprint_points"), on="driverId", how="left"
     )
-    ranking = ranking.merge(mt_points_sum.reset_index(name="mt_points"), on="driverId", how="left")
+    ranking = ranking.merge(
+        mt_points_sum.reset_index(name="mt_points"), on="driverId", how="left"
+    )
 
     # Build Driver objects list
     driver_list = []

@@ -1,11 +1,37 @@
 import csv
-import numpy as np
-import matplotlib.pyplot as plt
 from options.config import DATA_DIR
-import src.model.internal.driver as d
+from src.model.internal.driver import Driver
 
 
-def drivers_by_nationality(wanted_nationality):
+def DriversByNationality(wanted_nationality: str):
+    """
+    Retrieves the proportion of drivers from a specified nationality and returns a list
+        of those drivers.
+
+    :param wanted_nationality: The nationality of the drivers you want to filter.
+    :type wanted_nationality: str
+
+    :return: A tuple containing:
+        - A float representing the proportion of drivers from the specified nationality
+            relative to the total number of drivers.
+        - A list of Driver objects representing the drivers from the specified
+            nationality.
+    :rtype: tuple(float, list)
+
+    :raises TypeError: If the `wanted_nationality` parameter is not a string.
+    :raises ValueError: If no drivers from the specified nationality are found.
+
+    :example:
+
+    proportion, drivers = DriversByNationality("German")
+     >>> print(proportion)
+     0.020954598370197905
+     >>> print([f'{driver.forename} {driver.surname}' for driver in drivers])
+     ['Mark Webber', 'David Brabham', 'Gary Brabham', 'Alan Jones', 'Larry Perkins',
+     'Brian McGuire', 'Vern Schuppan', 'Warwick Brown', 'Tim Schenken', 'David Walker',
+     'Jack Brabham', 'Frank Gardner', 'Paul Hawkins', 'Ken Kavanagh', 'Paul England',
+     'Tony Gaze', 'Daniel Ricciardo', 'Oscar Piastri']
+    """
     if not isinstance(wanted_nationality, str):
         raise TypeError("The wanted nationality should be a string.")
     else:
@@ -16,33 +42,10 @@ def drivers_by_nationality(wanted_nationality):
             for row in reader:
                 nb_line += 1
                 if row["nationality"] == wanted_nationality:
-                    driver = d.Driver(
-                        int(row["driverId"]),
-                        row["forename"],
-                        row["surname"],
-                        row["nationality"],
-                    )
+                    driver = Driver(row["forename"], row["surname"], row["nationality"])
                     drivers_list.append(driver)
         if len(drivers_list) == 0:
             raise ValueError("There is no driver with this nationality.")
         else:
             nationality_proportion = len(drivers_list) / nb_line
             return nationality_proportion, drivers_list
-
-
-# Exemple pris
-
-wanted_nationality = "Italian"
-
-
-# Graphique
-
-nationality_proportion = drivers_by_nationality(wanted_nationality)[0]
-y = np.array([nationality_proportion, 1 - nationality_proportion])
-mylabels = [f"{wanted_nationality}", "Other nationalities"]
-myexplode = [0.2, 0]
-mycolors = ["yellow", "lightblue"]
-
-plt.pie(y, labels=mylabels, explode=myexplode, colors=mycolors, autopct="%1.1f%%")
-plt.title(f"Part of {wanted_nationality} among drivers")
-plt.show()

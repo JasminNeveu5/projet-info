@@ -34,7 +34,9 @@ def most_damaged_driver(nombre_courses_minimum):
     results_total = results.groupby("driverId").size().reset_index(name="count")
     results_total = pd.merge(results_total, results_accident, on="driverId")
 
-    results_total["ratio"] = 100 * results_total["nombre_accident"] / results_total["count"]
+    results_total["ratio"] = (
+        100 * results_total["nombre_accident"] / results_total["count"]
+    )
     results_total = results_total.sort_values("ratio", ascending=False)
     results_total = results_total[results_total["count"] >= nombre_courses_minimum]
     result = []

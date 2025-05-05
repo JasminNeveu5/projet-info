@@ -14,7 +14,9 @@ class Driver:
 
     def __str__(self):
         additional_info_str = (
-            "\n".join([f"{key}: {value}" for key, value in self.additional_info.items()])
+            "\n".join(
+                [f"{key}: {value}" for key, value in self.additional_info.items()]
+            )
             if self.additional_info
             else "No additional info"
         )

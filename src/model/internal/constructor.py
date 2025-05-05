@@ -10,9 +10,24 @@ class Constructor:
 
     def __str__(self):
         additional_info_str = (
-            "\n".join([f"{key}: {value}" for key, value in self.additional_info.items()])
+            "\n".join(
+                [f"{key}: {value}" for key, value in self.additional_info.items()]
+            )
             if self.additional_info
             else "No additional info"
         )
 
-        return f"Name: {self.name}\n" f"Country: {self.nationality}\n" f"{additional_info_str}"
+        return (
+            f"Name: {self.name}\n"
+            f"Country: {self.nationality}\n"
+            f"{additional_info_str}"
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, Constructor):
+            return ValueError("Not an object of class `Constructor`")
+        return (
+            self.name == other.name and
+            self.nationality == other.nationality and
+            self.additional_info == other.additional_info
+        )

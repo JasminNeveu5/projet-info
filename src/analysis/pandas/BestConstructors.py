@@ -1,59 +1,101 @@
 import pandas as pd
-import numpy as np
 from options.config import DATA_DIR
 from src.model.internal.constructor import Constructor
 
 
-constructor_standings = pd.read_csv(f"{DATA_DIR}/constructor_standings.csv")
-constructors = pd.read_csv(f"{DATA_DIR}/constructors.csv")
-races = pd.read_csv(f"{DATA_DIR}/races.csv")
-
-jointure = pd.merge(constructor_standings, constructors, on="constructorId", how="left")
-jointure = pd.merge(jointure, races, on="raceId", how="left")
-jointure = jointure[["name_x", "year", "wins", "nationality"]]
-
-
-# Fonction
-
-
-def best_constructors(wanted_year):
+def BestConstructors(wanted_year: str):
     """
-    Returns a list of Constructor objects representing the best constructors for a given year.
+       Returns a list of constructors with their total points for a given year.
 
-    Args:
-        wanted_year (int): The year for which to retrieve the best constructors.
+       This function reads data from CSV files containing constructor results, constructor
+       information, and race data. It filters the results by the specified year, aggregates
+       the total points earned by each constructor, and returns a list of `Constructor`
+       objects containing the name, nationality, and total points (interpreted as wins).
 
-    Returns:
-        list[Constructor]: A list of Constructor objects sorted by number of wins in descending order.
+       :param wanted_year: The year for which to retrieve the best constructors.
+       :type wanted_year: int
+
+       :return: A list of Constructor objects representing the best constructors in the
+           given year, sorted by total points.
+       :rtype: list[Constructor]
+
+       :raises FileNotFoundError: If any of the required CSV files are missing.
+       :raises ValueError: If no constructor data is available for the specified year.
+       :raises IndexError: If a constructor's nationality cannot be matched from the
+           constructors data.
+
+       :example:
+
+    top_constructors = BestConstructors(2022)
+        >>> for constructor in top_constructors:
+        ...     print(constructor)
+        Name: Red Bull
+        Country: Austrian
+        wins: 759.0
+        Name: Ferrari
+        Country: Italian
+        wins: 554.0
+        Name: Mercedes
+        Country: German
+        wins: 515.0
+        Name: Alpine F1 Team
+        Country: French
+        wins: 173.0
+        Name: McLaren
+        Country: British
+        wins: 159.0
+        Name: Alfa Romeo
+        Country: Swiss
+        wins: 55.0
+        Name: Aston Martin
+        Country: British
+        wins: 55.0
+        Name: Haas F1 Team
+        Country: American
+        wins: 37.0
+        Name: AlphaTauri
+        Country: Italian
+        wins: 35.0
+        Name: Williams
+        Country: British
+        wins: 8.0
     """
-    # Group by constructor and sum wins, take the first nationality (they are always the same for a constructor)
-    filtered = jointure[jointure["year"] == wanted_year]
-    result = (
-        filtered.groupby("name_x")
-        .agg({"wins": "sum", "nationality": "first"})
-        .sort_values("wins", ascending=False)
-        .reset_index()
-    )
-    result = result.rename(columns={"name_x": "name"})
+    if not isinstance(wanted_year, int):
+        raise TypeError("A year has to be a integer.")
+    elif wanted_year > 2024 or wanted_year < 1950:
+        raise ValueError("The available data is between 1950 and 2024.")
+    else:
+        constructor_results = pd.read_csv(f"{DATA_DIR}/constructor_results.csv")
+        constructors = pd.read_csv(f"{DATA_DIR}/constructors.csv")
+        races = pd.read_csv(f"{DATA_DIR}/races.csv")
 
-    best_constructor_list = []
+        merged_df = pd.merge(constructor_results, races, on="raceId")
+        merged_df = pd.merge(merged_df, constructors, on="constructorId")
+        filtered_df = merged_df[merged_df["year"] == wanted_year]
 
-    for _, row in result.iterrows():
-        best_constructor_list.append(
-            Constructor(
-                name=row["name"],
-                nationality=row["nationality"],
-                wins=row["wins"],
-            )
+        constructor_points = (
+            filtered_df.groupby("name_y")["points"]
+            .sum()
+            .reset_index(name="total_points")
         )
-
-    return best_constructor_list
+        BestConstructorList = []
+        for index, row in constructor_points.iterrows():
+            constructor_nationality = constructors.loc[
+                constructors["name"] == row["name_y"], "nationality"
+            ].values[0]
+            BestConstructorList.append(
+                Constructor(
+                    name=row["name_y"],
+                    nationality=constructor_nationality,
+                    wins=row["total_points"],
+                )
+            )
+        BestConstructorList.sort(
+            key=lambda c: c.additional_info.get("wins", 0), reverse=True
+        )
+        return BestConstructorList
 
 
 if __name__ == "__main__":
-    year = 2021
-    best_constructors_list = best_constructors(year)
-    for constructor in best_constructors_list:
-        print(
-            f"{constructor.name} - {constructor.nationality} - {constructor.additional_info["wins"]} wins"
-        )
+    for truc in BestConstructors(2022):
+        print(type(truc))

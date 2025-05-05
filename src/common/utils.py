@@ -87,7 +87,11 @@ def merge_dicts(left, right, key):
     :rtype: list[dict]
     """
     right_lookup = {item[key]: item for item in right}
-    return [{**item, **right_lookup[item[key]]} for item in left if item[key] in right_lookup]
+    return [
+        {**item, **right_lookup[item[key]]}
+        for item in left
+        if item[key] in right_lookup
+    ]
 
 
 def time_to_seconds(time_str):

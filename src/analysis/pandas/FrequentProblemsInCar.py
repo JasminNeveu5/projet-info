@@ -48,13 +48,16 @@ def get_status_code_occurrences(status, manufacturer=None):
     # Ces statusId ont été récupéré à la main en lisant les problèmes qu'ils indiquaient.
     status_counts = status_counts[
         ~status_counts["statusId"].isin(
-            [1, 2, 3, 4, 31, 50, 128, 53, 58, 73, 81, 82, 88, 97, 100] + list(range(11, 20))
+            [1, 2, 3, 4, 31, 50, 128, 53, 58, 73, 81, 82, 88, 97, 100]
+            + list(range(11, 20))
         )
     ]
 
     # Calculer le total des occurrences de résultats par constructeur (le nombre de courses auxquels ils ont participé)
     total_counts = (
-        results_x_constructor.groupby("constructorId").size().reset_index(name="total_count")
+        results_x_constructor.groupby("constructorId")
+        .size()
+        .reset_index(name="total_count")
     )
 
     # Ajouter la colonne de proportion de problèmes dans le tableau
@@ -88,17 +91,23 @@ def get_status_code_occurrences(status, manufacturer=None):
 
     # EN PROPORTION
 
-    failures_per_constructor = status_counts_constructor.merge(total_counts, on="constructorId")
+    failures_per_constructor = status_counts_constructor.merge(
+        total_counts, on="constructorId"
+    )
     failures_per_constructor["failure_proportion"] = (
         failures_per_constructor["count"] / failures_per_constructor["total_count"]
     )
 
     # Filter data based on the given statusCode
-    filtered_data = status_counts_per_constructor[status_counts_per_constructor["status"] == status]
+    filtered_data = status_counts_per_constructor[
+        status_counts_per_constructor["status"] == status
+    ]
 
     # If a manufacturer is provided, filter further by its name
     if manufacturer:
-        filtered_data = filtered_data[filtered_data["name"].str.lower() == manufacturer.lower()]
+        filtered_data = filtered_data[
+            filtered_data["name"].str.lower() == manufacturer.lower()
+        ]
 
     # Rename columns for consistency
 
