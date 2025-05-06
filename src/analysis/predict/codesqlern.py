@@ -17,7 +17,7 @@ def preprocess_data(df):
     df["won_race"] = df["positionOrder"] == 1
 
     # Convert categorical variables to numerical (if needed)
-    df = pd.get_dummies(df, columns=["driver_name", "race_name"], drop_first=True)
+    df = pd.get_dummies(df, columns=["driver_name", "race_name"], drop_first=False)
 
     # Select features - adjust based on your feature importance analysis
     features = [
@@ -85,9 +85,10 @@ def predict_race_winner(model, driver_name, race_name, df):
         "Pierre Gasly",
         "Yuki Tsunoda",
         "Nico Hülkenberg",
+        "Oscar Piastri"
     ]
     if driver_name not in pilotes_2025:
-        raise ValueError("Le pilote doit participer à la saison 2025.")
+        raise ValueError("The driver must participate in the 2025 season.")
 
     # Create a dictionary with all features set to 0 initially
     input_data = {col: 0 for col in model.feature_names_in_}
@@ -159,11 +160,19 @@ if __name__ == "__main__":
         "Pierre Gasly",
         "Yuki Tsunoda",
         "Nico Hülkenberg",
+        "Oscar Piastri"
     ]
 
-    print(f"Course:{race} \n")
-    for driver in pilotes_2025[::-1]:
-        print("------ \n")
-        print(driver)
+    print(f"Course: {race} \n")
+    driver_probs = []
+    for driver in pilotes_2025:
         will_win, probability = predict_race_winner(model, driver, race, data)
-        print(f"{will_win}:{probability}")
+        driver_probs.append((driver, will_win, probability))
+
+    # Sort by probability descending
+    driver_probs.sort(key=lambda x: x[2], reverse=True)
+
+    for driver, will_win, probability in driver_probs:
+        print("------\n")
+        print(driver)
+        print(f"{will_win}: {probability:.4f}")
