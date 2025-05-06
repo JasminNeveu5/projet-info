@@ -1,7 +1,10 @@
+import csv
+
 def read_csv(filepath):
     """
     Reads a CSV file and returns its contents as a list of dictionaries. Each dictionary
     represents a row in the CSV, using the header row for keys and subsequent rows as values.
+    Properly handles quoted fields that may contain commas.
 
     :param filepath: The path to the CSV file to read.
     :type filepath: str
@@ -9,21 +12,29 @@ def read_csv(filepath):
     :rtype: list[dict[str, str]]
     :raises ValueError: If a row contains too many or too few values compared to the header.
     """
+    result = []
     with open(filepath, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        if not lines:
+        # Create a CSV reader that handles quoted fields properly
+        csv_reader = csv.reader(f, quotechar='"', delimiter=',', 
+                               quoting=csv.QUOTE_MINIMAL, skipinitialspace=True)
+        
+        # Read header
+        try:
+            header = next(csv_reader)
+        except StopIteration:
             return []
-        header = lines[0].strip().split(",")
-        rows = [line.strip().split(",") for line in lines[1:]]
-
-        for idx, row in enumerate(rows):
+        
+        # Process rows
+        for line_num, row in enumerate(csv_reader, 2):  # Start at 2 for line numbers (header is line 1)
             if len(row) != len(header):
                 raise ValueError(
-                    f"Row {idx + 1} has an incorrect number of values. "
+                    f"Row {line_num} has an incorrect number of values. "
                     f"Expected {len(header)}, got {len(row)}."
                 )
-
-        return [dict(zip(header, row)) for row in rows]
+            
+            result.append(dict(zip(header, row)))
+            
+    return result
 
 
 def merge(table1, table2, key):
@@ -118,3 +129,7 @@ def time_to_seconds(time_str):
         return total_seconds
     except ValueError:
         return None
+
+
+if __name__ == "__main__":
+    print(read_csv("/home/victor/Documents/projet-info/data/drivers.csv"))

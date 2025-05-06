@@ -49,3 +49,14 @@ def DriversByNationality(wanted_nationality: str):
         else:
             nationality_proportion = len(drivers_list) / nb_line
             return nationality_proportion, drivers_list
+
+if __name__ == "__main__":
+    # Example usage
+    try:
+        proportion, drivers = DriversByNationality("German")
+        print(f"Proportion: {proportion}")
+        print("Drivers:")
+        for driver in drivers:
+            print(f"{driver.forename} {driver.surname}")
+    except Exception as e:
+        print(f"Error: {e}")

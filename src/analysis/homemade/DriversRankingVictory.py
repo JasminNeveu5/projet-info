@@ -72,3 +72,9 @@ def get_ranking_victory(nb_victory: int):
             )
         )
     return liste_retour
+
+if __name__ == "__main__":
+    # Example usage
+    drivers = get_ranking_victory(50)
+    for driver in drivers:
+        print(driver)
