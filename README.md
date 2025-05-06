@@ -47,11 +47,11 @@ The required dependencies for the project are listed in the `requirements.txt` f
 
 To run the CLI application, use the ```python main.py``` file as the entry point. Here's how to laucn it
 
-1. Ensure you are in the root directory of the project.
+1. Ensure you are just up the root directory of the project. (example: go in the project then `cd ..`)
 2. Run the following command:
 
 ```bash
-python -m project-info
+python -m projet-info
 ```
 
 ## Running the API
