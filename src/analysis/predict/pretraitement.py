@@ -177,6 +177,45 @@ class Pretraitement:
             lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
         )
 
+    # Fill NA values for each driver and each circuit with their respective means, else 0 if not enough data
+
+        # Group 1: positionN1, positionN2, positionN3
+        pos_cols = ["positionN1", "positionN2", "positionN3"]
+
+        # Compute row-wise mean for the three columns, ignoring NA
+        pos_row_means = df[pos_cols].mean(axis=1, skipna=True)
+
+        # Fill NA values in each column with the row-wise mean
+        for col in pos_cols:
+            df[col] = df[col].fillna(pos_row_means)
+
+        # If still NA (all three were NA), fill with 0
+        for col in pos_cols:
+            df[col] = df[col].fillna(0)
+
+        # Group 2: averageTimeCircuit
+        df["averageTimeCircuit"] = df.groupby(["driverId", "race_name"])["averageTimeCircuit"].transform(
+            lambda x: x.fillna(x.mean())
+        )
+        df["averageTimeCircuit"] = df.groupby("driverId")["averageTimeCircuit"].transform(
+            lambda x: x.fillna(x.mean())
+        )
+        df["averageTimeCircuit"] = df["averageTimeCircuit"].fillna(0)
+
+        # Group 3: positionCircuitN1, positionCircuitN2, positionCircuitN3
+        circuit_cols = ["positionCircuitN1", "positionCircuitN2", "positionCircuitN3"]
+
+        # Compute row-wise mean for the three columns, ignoring NA
+        row_means = df[circuit_cols].mean(axis=1, skipna=True)
+
+        # Fill NA values in each column with the row-wise mean
+        for col in circuit_cols:
+            df[col] = df[col].fillna(row_means)
+
+        # If still NA (all three were NA), fill with 0
+        for col in circuit_cols:
+            df[col] = df[col].fillna(0)
+
         print(df["driver_name"].unique())
         return df
 
