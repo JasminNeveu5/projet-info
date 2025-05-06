@@ -1,4 +1,33 @@
-# Data processing project - Formula 1
+# Formule 1 : pourquoi la saison de 2025 prend-elle un virage inattendu ?
+```
+ ____                            __      
+/\  _`\               __        /\ \__   
+\ \ \L\ \_ __   ___  /\_\     __\ \ ,_\  
+ \ \ ,__/\`'__\/ __`\\/\ \  /'__`\ \ \/  
+  \ \ \/\ \ \//\ \L\ \\ \ \/\  __/\ \ \_ 
+   \ \_\ \ \_\\ \____/_\ \ \ \____\\ \__\
+    \/_/  \/_/ \/___//\ \_\ \/____/ \/__/
+                     \ \____/            
+                      \/___/             
+ __                       __                                     __      
+/\ \__                 __/\ \__                                 /\ \__   
+\ \ ,_\  _ __    __   /\_\ \ ,_\    __    ___ ___      __    ___\ \ ,_\  
+ \ \ \/ /\`'__\/'__`\ \/\ \ \ \/  /'__`\/' __` __`\  /'__`\/' _ `\ \ \/  
+  \ \ \_\ \ \//\ \L\.\_\ \ \ \ \_/\  __//\ \/\ \/\ \/\  __//\ \/\ \ \ \_ 
+   \ \__\\ \_\\ \__/.\_\\ \_\ \__\ \____\ \_\ \_\ \_\ \____\ \_\ \_\ \__\
+    \/__/ \/_/ \/__/\/_/ \/_/\/__/\/____/\/_/\/_/\/_/\/____/\/_/\/_/\/__/
+                                                                         
+                                                                         
+  __                  __                                                  
+ /\ \                /\ \                                                 
+ \_\ \     __        \_\ \    ___     ___     ___      __     __    ____  
+ /'_` \  /'__`\      /'_` \  / __`\ /' _ `\ /' _ `\  /'__`\ /'__`\ /',__\ 
+/\ \L\ \/\  __/     /\ \L\ \/\ \L\ \/\ \/\ \/\ \/\ \/\  __//\  __//\__, `\
+\ \___,_\ \____\    \ \___,_\ \____/\ \_\ \_\ \_\ \_\ \____\ \____\/\____/
+ \/__,_ /\/____/     \/__,_ /\/___/  \/_/\/_/\/_/\/_/\/____/\/____/\/___/ 
+                                                                          
+```
+
 
 
 This is a project for the course "Traitement de données" at the ENSAI, where we analyze data from the Formula 1 World Championship. The project is divided into two parts: a data analysis part and a machine learning part.
@@ -35,6 +64,7 @@ To run the API, use the `src/api/main.py` file as the entry point. Here's how to
 ```bash
 fastapi dev src/api/main.py
 ```
+3. You can access the API documentation after running the server by navigating to `http://localhost:8000/docs` in your web browser. This will provide you with an interactive interface to test the API endpoints.
 
 
 ## Running Tests
