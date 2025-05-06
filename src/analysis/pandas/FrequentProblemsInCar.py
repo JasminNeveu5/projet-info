@@ -115,6 +115,7 @@ def get_status_code_occurrences(status, manufacturer=None):
     filtered_data = filtered_data.merge(f1_constructor, on="constructorId")[
         ["name_x", "status", "nationality", "proportion", "count"]
     ]
+    filtered_data = filtered_data.sort_values("count", ascending=False)
     constructors = []
     constructors = [
         Constructor(
