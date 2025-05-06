@@ -75,6 +75,10 @@ def get_ranking_victory(nb_victory: int):
 
 if __name__ == "__main__":
     # Example usage
+    import time
+    start = time.time()
     drivers = get_ranking_victory(50)
+    end = time.time()
+    print(f"Execution time: {end - start:.2f} seconds")
     for driver in drivers:
         print(driver)
