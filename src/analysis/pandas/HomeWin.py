@@ -52,7 +52,8 @@ def home_win(nationalite):
             "moyenne_locale",
             "nationality",
         ]
-    ].query(f"nationality == '{nationalite}'")
+    ]
+    compare = compare[compare["nationality"] == nationalite.lower()]
     compare = compare.sort_values("moyenne_locale", ascending=True)
     result = []
     for index, row in compare.iterrows():

@@ -3,7 +3,7 @@ class Race:
         if not isinstance(name, str):
             raise TypeError("name doit être de type string")
         if not isinstance(year, int):
-            raise TypeError("year doit être de type string")
+            raise TypeError("year doit être de type int")
         if not isinstance(date, str):
             raise TypeError("date doit être de type string")
         self.name = name
