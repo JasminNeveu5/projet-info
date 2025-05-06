@@ -1,10 +1,31 @@
 import subprocess
 import pandas as pd
+import time
 from src.analysis.predict.codesqlern import predict_race_winner, preprocess_data, train_model
 from options.config import DATA_DIR
 
 if __name__ == "__main__":
     # main menu
+    print("Project Data Processing Group 12 (2024/2025) is proud to present")
+    time.sleep(.5)
+    for _ in range(len("Project Data Processing Group 12 (2024/2025) is proud to present")):
+        print(".", end="", flush=True)
+        time.sleep(0.02)
+    print('\n')
+    print("""                                     _     
+                        ___   ___   | |    
+ ___ ___ ___ _ _ ___   |_  | |_  |  |_|___ 
+| . |  _| . | | | . |   _| |_|  _|    |_ -|
+|_  |_| |___|___|  _|  |_____|___|    |___|
+|___|           |_|                        
+                           
+           _               
+ _____ ___|_|___   ___ _ _ 
+|     | .'| |   |_| . | | |
+|_|_|_|__,|_|_|_|_|  _|_  |
+                  |_| |___|""")
+    time.sleep(.5)
+    print("\n")
     print("Do you want to rebuild the dataframe for the prediction model ?")
     print("1. Yes")
     print("2. No")
