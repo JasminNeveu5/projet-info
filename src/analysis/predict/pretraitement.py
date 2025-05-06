@@ -1,7 +1,7 @@
-from options.config import DATA_DIR
 import pandas as pd
 import warnings
 from tqdm import tqdm  # Import tqdm for progress bar
+from options.config import DATA_DIR
 
 results = pd.read_csv(f"{DATA_DIR}/results.csv")
 races = pd.read_csv(f"{DATA_DIR}/races.csv")

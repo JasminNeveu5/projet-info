@@ -3,7 +3,7 @@ from src.model.internal.driver import Driver
 from options.config import DATA_DIR
 
 
-def most_damaged_driver(nombre_courses_minimum):
+def most_damaged_driver(nombre_courses_minimum:int):
     """
     Identifies the drivers with the highest accident ratio based on their number of accidents
     relative to their total races. The function filters drivers who have participated in at

@@ -3,7 +3,7 @@ from options.config import DATA_DIR
 from src.model.internal.constructor import Constructor
 
 
-def BestConstructors(wanted_year: str):
+def BestConstructors(wanted_year: int):
     """
        Returns a list of constructors with their total points for a given year.
 
