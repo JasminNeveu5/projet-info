@@ -227,3 +227,55 @@ with warnings.catch_warnings():
     data = Pretraitement.prepare()
     # data.dropna(inplace=True)
     data.to_csv(f"{DATA_DIR}/df.csv", index=False)
+
+# Adding constructor-related data
+import pandas as pd
+from tqdm import tqdm  # For progress bars
+
+# Load the necessary dataframes
+df = pd.read_csv(f"{DATA_DIR}/df.csv")
+constructors_df = pd.read_csv(f"{DATA_DIR}/constructors.csv")
+constructor_results_df = pd.read_csv(f"{DATA_DIR}/constructor_results.csv")
+results_df = pd.read_csv(f"{DATA_DIR}/results.csv")  # Need this to link drivers to constructors
+
+# Step 1: Get constructorId for each driver-race combination
+print("Merging driver data with constructor information...")
+# First, ensure df has constructorId by merging with results
+if 'constructorId' not in df.columns:
+    df = df.merge(results_df[['raceId', 'driverId', 'constructorId']], on=['raceId', 'driverId'])
+
+# Step 2: Merge with constructors to get constructorRef
+df = df.merge(constructors_df[['constructorId', 'constructorRef']], on='constructorId')
+
+# Step 3: Calculate historical constructor points for each circuit
+print("Calculating historical constructor results by circuit...")
+# Create a dataframe with constructor points for each race at each circuit
+constructor_points = constructor_results_df.merge(constructors_df[['constructorId', 'constructorRef']], 
+                                                on='constructorId')
+
+# Now get race information (including circuit)
+races_df = pd.read_csv(f"{DATA_DIR}/races.csv")
+constructor_points = constructor_points.merge(races_df[['raceId', 'name', 'date', 'year']], on='raceId')
+
+# Sort by date to get correct historical order
+constructor_points = constructor_points.sort_values(['name', 'constructorRef', 'date'])
+
+# Calculate the historical points (N1, N2, N3) for each constructor at each circuit
+constructor_points['constructorResultsN1'] = constructor_points.groupby(['name', 'constructorRef'])['points'].shift(1)
+constructor_points['constructorResultsN2'] = constructor_points.groupby(['name', 'constructorRef'])['points'].shift(2)
+constructor_points['constructorResultsN3'] = constructor_points.groupby(['name', 'constructorRef'])['points'].shift(3)
+
+# Step 4: Merge the historical points back to the main dataframe
+print("Adding constructor history columns to dataframe...")
+# We need to join based on raceId and constructorId
+df = df.merge(
+    constructor_points[['raceId', 'constructorId', 'constructorResultsN1', 'constructorResultsN2', 'constructorResultsN3']],
+    on=['raceId', 'constructorId'],
+    how='left'  # Use left join to keep all df rows
+)
+
+# Step 5: Fill NaN values with 0 for races where there's no prior data
+df[['constructorResultsN1', 'constructorResultsN2', 'constructorResultsN3']] = \
+    df[['constructorResultsN1', 'constructorResultsN2', 'constructorResultsN3']].fillna(0)
+
+df.to_csv(f"{DATA_DIR}/df.csv", index=False)

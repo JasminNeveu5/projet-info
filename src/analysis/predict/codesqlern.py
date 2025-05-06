@@ -32,6 +32,10 @@ def preprocess_data(df):
         "qualifCircuitN1",
         "qualifCircuitN2",
         "qualifCircuitN3",
+        "constructorId",
+        "constructorResultsN1",
+        "constructorResultsN2",
+        "constructorResultsN3"
     ]
 
     # Add the one-hot encoded columns for drivers and races
@@ -120,6 +124,9 @@ def predict_race_winner(model, driver_name, race_name, df):
         "positionCircuitN1",
         "positionCircuitN2",
         "positionCircuitN3",
+        "constructorResultsN1",
+        "constructorResultsN2",
+        "constructorResultsN3"
     ]
 
     for feat in numerical_features:
@@ -148,7 +155,7 @@ if __name__ == "__main__":
     model = train_model(X, y)
 
     # Example prediction
-    race = "Suzuka Circuit"
+    race = "Circuit de Monaco"
 
     pilotes_2025 = [
         "Lando Norris",
@@ -172,8 +179,8 @@ if __name__ == "__main__":
         will_win, probability = predict_race_winner(model, driver, race, data)
         driver_probs.append((driver, will_win, probability))
 
-    # Sort by probability descending
-    driver_probs.sort(key=lambda x: x[2], reverse=True)
+    # Sort by probability ascending
+    driver_probs.sort(key=lambda x: x[2], reverse=False)
 
     for driver, will_win, probability in driver_probs:
         print("------\n")
