@@ -203,6 +203,7 @@ def launch_question():
                 if isinstance(result, list):
                     for item in result:
                         print(item)
+                    print('\n')
                 else:
                     print(result)
                     print('\n')
