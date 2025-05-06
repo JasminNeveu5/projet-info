@@ -1,10 +1,8 @@
-import csv
-
 def read_csv(filepath):
     """
     Reads a CSV file and returns its contents as a list of dictionaries. Each dictionary
     represents a row in the CSV, using the header row for keys and subsequent rows as values.
-    Properly handles quoted fields that may contain commas.
+    Handles commas within quoted fields correctly.
 
     :param filepath: The path to the CSV file to read.
     :type filepath: str
@@ -12,29 +10,42 @@ def read_csv(filepath):
     :rtype: list[dict[str, str]]
     :raises ValueError: If a row contains too many or too few values compared to the header.
     """
-    result = []
-    with open(filepath, "r", encoding="utf-8") as f:
-        # Create a CSV reader that handles quoted fields properly
-        csv_reader = csv.reader(f, quotechar='"', delimiter=',', 
-                               quoting=csv.QUOTE_MINIMAL, skipinitialspace=True)
+    def parse_csv_line(line):
+        result = []
+        current_field = ""
+        in_quotes = False
         
-        # Read header
-        try:
-            header = next(csv_reader)
-        except StopIteration:
+        for char in line.strip():
+            if char == '"':
+                in_quotes = not in_quotes
+            elif char == ',' and not in_quotes:
+                result.append(current_field)
+                current_field = ""
+            else:
+                current_field += char
+                
+        # Add the last field
+        result.append(current_field)
+        return result
+    
+    with open(filepath, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        if not lines:
             return []
         
-        # Process rows
-        for line_num, row in enumerate(csv_reader, 2):  # Start at 2 for line numbers (header is line 1)
+        header = parse_csv_line(lines[0])
+        result = []
+        
+        for idx, line in enumerate(lines[1:], 1):
+            row = parse_csv_line(line)
             if len(row) != len(header):
                 raise ValueError(
-                    f"Row {line_num} has an incorrect number of values. "
+                    f"Row {idx} has an incorrect number of values. "
                     f"Expected {len(header)}, got {len(row)}."
                 )
-            
             result.append(dict(zip(header, row)))
-            
-    return result
+        
+        return result
 
 
 def merge(table1, table2, key):
