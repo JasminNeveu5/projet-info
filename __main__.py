@@ -117,17 +117,17 @@ def launch_question():
     import importlib
     import inspect
     import os
-    
+
     # Get all python files from the pandas folder (excluding __init__.py and __pycache__)
     pandas_dir = os.path.join("projet-info","src", "analysis", "pandas")
-    analysis_files = [f[:-3] for f in os.listdir(pandas_dir) 
+    analysis_files = [f[:-3] for f in os.listdir(pandas_dir)
                      if f.endswith('.py') and f != '__init__.py' and not f.startswith('test')]
-    
+
     # Display the menu
     print("\nAvailable analyses:")
     for idx, analysis in enumerate(analysis_files, 1):
         print(f"{idx}. {analysis}")
-    
+
     # Get user choice
     try:
         choice = int(input("Enter the number of the analysis to run: "))
@@ -137,47 +137,47 @@ def launch_question():
     except ValueError:
         print("Please enter a number.")
         return
-    
+
     selected_analysis = analysis_files[choice - 1]
-    
+
     try:
         # Import the selected analysis module
         module_name = f"src.analysis.pandas.{selected_analysis}"
         module = importlib.import_module(module_name)
-        
+
         # Try to find the main function (usually named the same as the file)
         main_function = None
         for name, obj in inspect.getmembers(module):
             if inspect.isfunction(obj) and name == selected_analysis:
                 main_function = obj
                 break
-        
+
         if main_function is None:
             # If no function with same name exists, look for any function
             for name, obj in inspect.getmembers(module):
                 if inspect.isfunction(obj) and not name.startswith('_'):
                     main_function = obj
                     break
-        
+
         if main_function:
             # Get function parameters
             params = inspect.signature(main_function).parameters
             args = []
-            
+
             # Ask for each parameter
             for param_name, param in params.items():
                 # Try to determine parameter type from annotations or default value
                 param_type = param.annotation if param.annotation != inspect.Parameter.empty else "string"
                 type_hint = f" ({param_type.__name__})" if hasattr(param_type, "__name__") else ""
-                
+
                 # Show default value if available
                 default_hint = ""
                 if param.default != inspect.Parameter.empty:
                     default_hint = f" [default: {param.default}]"
-                
+
                 # Prompt for input
                 value = input(f"Enter {param_name}{type_hint}{default_hint}: ")
-                
+
                 # Use default if input is empty and default exists
                 if value == "" and param.default != inspect.Parameter.empty:
                     args.append(param.default)
@@ -191,11 +191,12 @@ def launch_question():
                         args.append(value.lower() in ('yes', 'true', 't', 'y', '1'))
                     else:
                         args.append(value)
-            
+
             # Call the function with gathered parameters
+            print('\n')
             print(f"\nRunning {selected_analysis}...\n")
             result = main_function(*args)
-            
+
             # Display the result
             if result is not None:
                 if isinstance(result, list):
@@ -203,9 +204,10 @@ def launch_question():
                         print(item)
                 else:
                     print(result)
+                    print('\n')
         else:
             print(f"No callable function found in {selected_analysis}. The file might run on import.")
-            
+
     except Exception as e:
         print(f"Error running the analysis: {str(e)}")
 
