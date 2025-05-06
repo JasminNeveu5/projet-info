@@ -77,3 +77,13 @@ The project includes test files to verify the functionality of its features. To 
 ```bash
 pytest -v
 ```
+
+## Pylint bonus test
+
+1. Ensure you have pylint install and that you are in the root directory
+2. run the following command to chack how good or bad the code is:
+```bash
+pylint . --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612,E0401
+```
+
+The disabled codes are import errors and name file errors that have too big of an impact on the score despite the first one depending on your PYTHONPATH and the other one is pure convention.
