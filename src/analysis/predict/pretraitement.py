@@ -156,25 +156,23 @@ class Pretraitement:
         df["qualifCircuitN2"] = df.groupby(["driverId", "race_name"])["grid"].shift(-2)
         df["qualifCircuitN3"] = df.groupby(["driverId", "race_name"])["grid"].shift(-3)
 
-        # Replace grid positions with qualification groups
+        # Replace grid positions with qualification groups as integers
         def grid_to_qualif_group(grid_position):
             if 1 <= grid_position <= 10:
-                return "q3"
+                return 3  # q3
             elif 11 <= grid_position <= 15:
-                return "q2"
-            # elif 16 <= grid_position:
-            #     return "q1"
+                return 2  # q2
             else:
-                return "q1"
+                return 1  # q1
 
         df["qualifCircuitN1"] = df["qualifCircuitN1"].apply(
-            lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
+            lambda x: grid_to_qualif_group(x) if pd.notna(x) else 1
         )
         df["qualifCircuitN2"] = df["qualifCircuitN2"].apply(
-            lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
+            lambda x: grid_to_qualif_group(x) if pd.notna(x) else 1
         )
         df["qualifCircuitN3"] = df["qualifCircuitN3"].apply(
-            lambda x: grid_to_qualif_group(x) if pd.notna(x) else "q1"
+            lambda x: grid_to_qualif_group(x) if pd.notna(x) else 1
         )
 
     # Fill NA values for each driver and each circuit with their respective means, else 0 if not enough data

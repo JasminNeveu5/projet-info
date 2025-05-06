@@ -29,6 +29,9 @@ def preprocess_data(df):
         "positionCircuitN1",
         "positionCircuitN2",
         "positionCircuitN3",
+        "qualifCircuitN1",
+        "qualifCircuitN2",
+        "qualifCircuitN3",
     ]
 
     # Add the one-hot encoded columns for drivers and races
