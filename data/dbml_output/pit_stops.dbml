@@ -1,0 +1,9 @@
+Table pit_stops {
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  stop integer [note: ""]
+  lap integer [note: ""]
+  time text [note: ""]
+  duration text [note: ""]
+  milliseconds integer [note: ""]
+}

@@ -1,0 +1,9 @@
+Table driver_standings {
+  driverStandingsId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  points float [note: ""]
+  position integer [note: ""]
+  positionText text [note: ""]
+  wins integer [note: ""]
+}

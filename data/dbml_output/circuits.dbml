@@ -1,0 +1,11 @@
+Table circuits {
+  circuitId integer [note: ""]
+  circuitRef text [note: ""]
+  name text [note: ""]
+  location text [note: ""]
+  country text [note: ""]
+  lat float [note: ""]
+  lng float [note: ""]
+  alt integer [note: ""]
+  url text [note: ""]
+}

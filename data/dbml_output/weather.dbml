@@ -1,0 +1,6 @@
+Table weather {
+  Unnamed: 0 integer [note: ""]
+  season integer [note: ""]
+  race_name text [note: ""]
+  weather text [note: ""]
+}

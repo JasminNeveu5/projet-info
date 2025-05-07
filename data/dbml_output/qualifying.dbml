@@ -1,0 +1,11 @@
+Table qualifying {
+  qualifyId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  constructorId integer [note: ""]
+  number integer [note: ""]
+  position integer [note: ""]
+  q1 text [note: ""]
+  q2 text [note: ""]
+  q3 text [note: ""]
+}

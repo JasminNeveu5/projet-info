@@ -1,0 +1,4 @@
+Table status {
+  statusId integer [note: ""]
+  status text [note: ""]
+}

@@ -1,0 +1,18 @@
+Table sprint_results {
+  resultId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  constructorId integer [note: ""]
+  number integer [note: ""]
+  grid integer [note: ""]
+  position text [note: ""]
+  positionText text [note: ""]
+  positionOrder integer [note: ""]
+  points integer [note: ""]
+  laps integer [note: ""]
+  time text [note: ""]
+  milliseconds text [note: ""]
+  fastestLap text [note: ""]
+  fastestLapTime text [note: ""]
+  statusId integer [note: ""]
+}

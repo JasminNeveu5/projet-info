@@ -1,0 +1,11 @@
+Table drivers {
+  driverId integer [note: ""]
+  driverRef text [note: ""]
+  number text [note: ""]
+  code text [note: ""]
+  forename text [note: ""]
+  surname text [note: ""]
+  dob text [note: ""]
+  nationality text [note: ""]
+  url text [note: ""]
+}

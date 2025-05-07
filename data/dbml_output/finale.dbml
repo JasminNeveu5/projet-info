@@ -1,0 +1,191 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table circuits {
+  circuitId integer [note: ""]
+  circuitRef text [note: ""]
+  name text [note: ""]
+  location text [note: ""]
+  country text [note: ""]
+  lat float [note: ""]
+  lng float [note: ""]
+  alt integer [note: ""]
+  url text [note: ""]
+}
+
+Table pit_stops {
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  stop integer [note: ""]
+  lap integer [note: ""]
+  time text [note: ""]
+  duration text [note: ""]
+  milliseconds integer [note: ""]
+}
+
+Table driver_standings {
+  driverStandingsId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  points float [note: ""]
+  position integer [note: ""]
+  positionText text [note: ""]
+  wins integer [note: ""]
+}
+
+Table results {
+  resultId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  constructorId integer [note: ""]
+  number text [note: ""]
+  grid integer [note: ""]
+  position text [note: ""]
+  positionText text [note: ""]
+  positionOrder integer [note: ""]
+  points float [note: ""]
+  laps integer [note: ""]
+  time text [note: ""]
+  milliseconds text [note: ""]
+  fastestLap text [note: ""]
+  rank text [note: ""]
+  fastestLapTime text [note: ""]
+  fastestLapSpeed text [note: ""]
+  statusId integer [note: ""]
+}
+
+Table constructor_standings {
+  constructorStandingsId integer [note: ""]
+  raceId integer [note: ""]
+  constructorId integer [note: ""]
+  points float [note: ""]
+  position integer [note: ""]
+  positionText text [note: ""]
+  wins integer [note: ""]
+}
+
+Table drivers {
+  driverId integer [note: ""]
+  driverRef text [note: ""]
+  number text [note: ""]
+  code text [note: ""]
+  forename text [note: ""]
+  surname text [note: ""]
+  dob text [note: ""]
+  nationality text [note: ""]
+  url text [note: ""]
+}
+
+Table lap_times {
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  lap integer [note: ""]
+  position integer [note: ""]
+  time text [note: ""]
+  milliseconds integer [note: ""]
+}
+
+Table qualifying {
+  qualifyId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  constructorId integer [note: ""]
+  number integer [note: ""]
+  position integer [note: ""]
+  q1 text [note: ""]
+  q2 text [note: ""]
+  q3 text [note: ""]
+}
+
+Table seasons {
+  year integer [note: ""]
+  url text [note: ""]
+}
+
+Table status {
+  statusId integer [note: ""]
+  status text [note: ""]
+}
+
+Table races {
+  raceId integer [note: ""]
+  year integer [note: ""]
+  round integer [note: ""]
+  circuitId integer [note: ""]
+  name text [note: ""]
+  date text [note: ""]
+  time text [note: ""]
+  url text [note: ""]
+  fp1_date text [note: ""]
+  fp1_time text [note: ""]
+  fp2_date text [note: ""]
+  fp2_time text [note: ""]
+  fp3_date text [note: ""]
+  fp3_time text [note: ""]
+  quali_date text [note: ""]
+  quali_time text [note: ""]
+  sprint_date text [note: ""]
+  sprint_time text [note: ""]
+}
+
+Table constructor_results {
+  constructorResultsId integer [note: ""]
+  raceId integer [note: ""]
+  constructorId integer [note: ""]
+  points float [note: ""]
+  status text [note: ""]
+}
+
+Table sprint_results {
+  resultId integer [note: ""]
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  constructorId integer [note: ""]
+  number integer [note: ""]
+  grid integer [note: ""]
+  position text [note: ""]
+  positionText text [note: ""]
+  positionOrder integer [note: ""]
+  points integer [note: ""]
+  laps integer [note: ""]
+  time text [note: ""]
+  milliseconds text [note: ""]
+  fastestLap text [note: ""]
+  fastestLapTime text [note: ""]
+  statusId integer [note: ""]
+}
+
+Table constructors {
+  constructorId integer [note: ""]
+  constructorRef text [note: ""]
+  name text [note: ""]
+  nationality text [note: ""]
+  url text [note: ""]
+}
+
+// --- References ---
+
+// Valid binary relationships
+Ref: races.circuitId > circuits.circuitId
+Ref: pit_stops.raceId > races.raceId
+Ref: pit_stops.driverId > drivers.driverId
+Ref: driver_standings.raceId > races.raceId
+Ref: driver_standings.driverId > drivers.driverId
+Ref: results.raceId > races.raceId
+Ref: results.driverId > drivers.driverId
+Ref: results.constructorId > constructors.constructorId
+Ref: results.statusId > status.statusId
+Ref: constructor_standings.raceId > races.raceId
+Ref: constructor_standings.constructorId > constructors.constructorId
+Ref: lap_times.raceId > races.raceId
+Ref: lap_times.driverId > drivers.driverId
+Ref: qualifying.raceId > races.raceId
+Ref: qualifying.driverId > drivers.driverId
+Ref: qualifying.constructorId > constructors.constructorId
+Ref: races.year > seasons.year
+Ref: constructor_results.raceId > races.raceId
+Ref: constructor_results.constructorId > constructors.constructorId
+Ref: sprint_results.raceId > races.raceId
+Ref: sprint_results.driverId > drivers.driverId
+Ref: sprint_results.constructorId > constructors.constructorId
+Ref: sprint_results.statusId > status.statusId

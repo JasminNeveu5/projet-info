@@ -1,0 +1,7 @@
+Table constructors {
+  constructorId integer [note: ""]
+  constructorRef text [note: ""]
+  name text [note: ""]
+  nationality text [note: ""]
+  url text [note: ""]
+}

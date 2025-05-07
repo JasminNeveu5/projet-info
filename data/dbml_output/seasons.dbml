@@ -1,0 +1,4 @@
+Table seasons {
+  year integer [note: ""]
+  url text [note: ""]
+}

@@ -1,0 +1,8 @@
+Table lap_times {
+  raceId integer [note: ""]
+  driverId integer [note: ""]
+  lap integer [note: ""]
+  position integer [note: ""]
+  time text [note: ""]
+  milliseconds integer [note: ""]
+}

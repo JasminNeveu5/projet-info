@@ -1,0 +1,7 @@
+Table constructor_results {
+  constructorResultsId integer [note: ""]
+  raceId integer [note: ""]
+  constructorId integer [note: ""]
+  points float [note: ""]
+  status text [note: ""]
+}
