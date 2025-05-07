@@ -61,4 +61,3 @@ if __name__ == "__main__":
     australian_drivers = DriversByNationality("Australian")
     for driver in australian_drivers:
         print(driver.forename, driver.surname)
-    print(DriversByNationality("Czech")[0].forename)
