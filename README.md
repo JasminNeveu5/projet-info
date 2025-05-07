@@ -41,7 +41,17 @@ To set up the project, follow these steps:
    ```bash
    python -m venv env
    ```
-3. Assure your PYTHONPATH is setup properly:
+3. Activate the virtual environment:
+   - On macOS and Linux:
+     ```bash
+     source env/bin/activate
+     ```
+   - On Windows:
+     ```bash
+     .\env\Scripts\activate
+     ```
+4. Assure your PYTHONPATH is setup properly:
+   on Linux or macOS systems
    ```bash
    export PYTHONPATH=$(pwd)
    ```
@@ -49,16 +59,7 @@ To set up the project, follow these steps:
    ```bash
    set PYTHONPATH=%cd%
    ```
-4. Activate the virtual environment:
-   - On macOS and Linux:
-     ```bash
-     source env/bin/activate
-     ```
-   - On Windows:
-     ```bash
-     .\\env\\Scripts\\activate
-     ```
-5. Install the dependencies using the following command:
+6. Install the dependencies using the following command:
    ```bash
    pip install -r requirements.txt
    ```
@@ -68,9 +69,9 @@ To set up the project, follow these steps:
 To run the CLI application, use the ```python main.py``` file as the entry point. Here's how to launchf it
 
 1. Ensure you are just up the root directory of the project. (example: go in the project then `cd ..`)
-2. Run the following command (**do not put / after projet-info**):
+2. Run the following command:
    ```bash
-   python -m projet-info
+   python -m <folder_name>
    ```
 
 ## Running the API
