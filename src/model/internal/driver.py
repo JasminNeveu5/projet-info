@@ -27,3 +27,6 @@ class Driver:
             f"Nationality: {self.nationality}\n"
             f"{additional_info_str}"
         )
+
+    def __eq__(self, other_driver):
+        return (self.forename == other_driver.forename) & (self.surname == other_driver.surname) & (self.nationality == other_driver.nationality)
