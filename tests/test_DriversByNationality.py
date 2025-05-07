@@ -25,7 +25,7 @@ def testParamTypes(param, typeerror, error):
         (
             "Czech"
             [
-                Driver(gngn)
+                
             ],
         )
     ],

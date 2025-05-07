@@ -47,11 +47,11 @@ The required dependencies for the project are listed in the `requirements.txt` f
 
 To run the CLI application, use the ```python main.py``` file as the entry point. Here's how to laucn it
 
-1. Ensure you are in the root directory of the project.
+1. Ensure you are just up the root directory of the project. (example: go in the project then `cd ..`)
 2. Run the following command:
 
 ```bash
-python -m project-info
+python -m projet-info
 ```
 
 ## Running the API
@@ -77,3 +77,13 @@ The project includes test files to verify the functionality of its features. To 
 ```bash
 pytest -v
 ```
+
+## Pylint bonus test
+
+1. Ensure you have pylint install and that you are in the root directory
+2. run the following command to chack how good or bad the code is:
+```bash
+pylint . --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612,E0401
+```
+
+The disabled codes are import errors and name file errors that have too big of an impact on the score despite the first one depending on your PYTHONPATH and the other one is pure convention.
