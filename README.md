@@ -37,8 +37,11 @@ This is a project for the course "Traitement de données" at the ENSAI, where we
 The required dependencies for the project are listed in the `requirements.txt` file. To install them, follow these steps:
 
 1. Make sure you have Python 3.8 or later installed on your machine.
-2. Install the dependencies using the following command:
-
+2. Go to the root directory of the project, then setup your virtual environment:
+   ```bash
+   python -m venv env
+   ```
+3. Install the dependencies using the following command:
    ```bash
    pip install -r requirements.txt
    ```
