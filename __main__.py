@@ -227,6 +227,7 @@ def main_menu():
             rebuild_dataframe()
             model, data = load_and_train()
         elif choice == "2":
+            model, data = load_and_train()
             predict_menu(model, data)
         elif choice == "3":
             launch_question()
