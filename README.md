@@ -32,30 +32,46 @@
 
 This is a project for the course "Traitement de données" at the ENSAI, where we analyze data from the Formula 1 World Championship. The project is divided into two parts: a data analysis part and a machine learning part.
 
-## Installing Dependencies
+## Setting up the project
 
-The required dependencies for the project are listed in the `requirements.txt` file. To install them, follow these steps:
+To set up the project, follow these steps:
 
 1. Make sure you have Python 3.8 or later installed on your machine.
 2. Go to the root directory of the project, then setup your virtual environment:
    ```bash
    python -m venv env
    ```
-3. Install the dependencies using the following command:
+3. Assure your PYTHONPATH is setup properly:
+   ```bash
+   export PYTHONPATH=$(pwd)
+   ```
+   or on Windows:
+   ```bash
+   set PYTHONPATH=%cd%
+   ```
+4. Activate the virtual environment:
+   - On macOS and Linux:
+     ```bash
+     source env/bin/activate
+     ```
+   - On Windows:
+     ```bash
+     .\\env\\Scripts\\activate
+     ```
+5. Install the dependencies using the following command:
    ```bash
    pip install -r requirements.txt
    ```
 
 ## Running the CLI Application
 
-To run the CLI application, use the ```python main.py``` file as the entry point. Here's how to laucn it
+To run the CLI application, use the ```python main.py``` file as the entry point. Here's how to launchf it
 
 1. Ensure you are just up the root directory of the project. (example: go in the project then `cd ..`)
-2. Run the following command:
-
-```bash
-python -m projet-info
-```
+2. Run the following command (**do not put / after projet-info**):
+   ```bash
+   python -m projet-info
+   ```
 
 ## Running the API
 
@@ -86,12 +102,13 @@ pytest -v
 ## Playground
 
 Grab your hats, beach toys and sunscreen, and have some fun on the playground playing with the functions !
+
 ## Pylint bonus test
 
 1. Ensure you have pylint install and that you are in the root directory
 2. run the following command to chack how good or bad the code is:
-```bash
-pylint . --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612,E0401
-```
+   ```bash
+   pylint . --disable=C0114,C0115,R0903,C0301,C0116,C0103,W0612,E0401
+   ```
 
 The disabled codes are import errors and name file errors that have too big of an impact on the score despite the first one depending on your PYTHONPATH and the other one is pure convention.
